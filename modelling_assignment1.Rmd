@@ -1,0 +1,59 @@
+---
+title: 'Computational modelling of judgments, decisions and cognition -- Assignments 1: Getting sttarted'
+author: "Dr. Nico Gradwohl"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+```
+
+
+# General rules for handing in assignments 
+
+
+1. You have to hand in all assignments except for two.
+
+1. Upload your assignments to the joint git repository. 
+
+1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
+
+1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
+
+
+# Task 1: Getting set and ready with R and RStudio 
+
+This task 
+
+*Note*: 
+You may also work in python and use a Jupyter notebook, howerver, I can help you less with that.
+
+```{r instructions-install-packages, eval=FALSE}
+install.packages("dplyr")
+
+install.packages("ggplot2")
+```
+
+
+# Task 2: A simple data model 
+
+The following code-chunk simulates some data (for now you do not need to understand how) and outputs a histogram.
+
+```{r simulate-data}
+
+```
+
+Find any model for this data. **TODO!**
+
+```{r task1}
+
+```
+
+
+**TODO: BASE ON MCELREATH EXAMPLE?**
+
+
+# Bonus task 
