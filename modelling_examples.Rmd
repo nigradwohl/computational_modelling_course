@@ -1,0 +1,103 @@
+---
+title: 'Computational modelling of judgments, decisions and cognition -- Materials
+author: "Dr. Nico Gradwohl"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+```
+
+
+# Session 0 
+
+## Example: Task performance 
+
+```{r, fig-forget}
+
+# Forgetting data:
+  N <- 150
+  t <- 0:N
+
+  # Power:
+    Ap <- 1000
+    Bp <- 500
+    bet <- 0.4
+  
+    RTp <- Ap + Bp * (t + 1)^(-bet) + rnorm(N + 1, 0, 50)
+
+  # Exponential:
+    Ae <- 1000
+    Be <- 500
+    alp <- 0.6
+  
+    RTe <- Ae + Be * exp(-alp * t) + rnorm(N + 1, 0, 50)
+
+  # Linear:
+
+# Plotting:
+  data.frame(t = t, RTp = RTp, RTe = RTe,
+              pred_p = Ap + Bp * (t + 1)^(-bet),
+              pred_e = Ae + Be * exp(-alp * t)) %>%
+    ggplot(aes(x = t)) +
+    geom_point(aes(y = RTp)) +
+    geom_line(aes(y = pred_p, linetype = "Power law"), linewidth = 1) +
+    # geom_line(aes(y = pred_e, linetype = "Exponetial law"), linewidth = 1) +
+    # Linear:
+    geom_smooth(aes(y = RTp, linetype = "Linear"), method = "lm", se = FALSE, linewidth = 1, color = "black") + 
+    labs(y = "RT (ms)", linetype = "") +
+    theme_bw()
+
+```
+
+## Tax cut 
+
+```{r}
+# Average tax cut of $ 1,083 
+# 
+# But: 80% receive less than this cut, half (around 45 Million people) receive less than $ 100, $ 30,127 for the top 1%
+
+# Try with lognormal:
+  curmu <- 0.01
+  cursd <- 10000
+  
+  x <- seq(0, curmu + cursd, by = 0.1)
+  plot(x, dlnorm(x, log(curmu), log(cursd)), type = "l")
+  
+  
+  1- plnorm(c(30127), log(curmu), log(cursd))
+  plnorm(c(1083, 100), log(curmu), log(cursd))
+  
+  # Target probabilities:
+  c(0.01, 0.8, 0.5)
+  
+  
+
+```
+
+
+
+## Linear model 
+
+```{r mean-mod}
+
+```
+
+
+```{r lin-mod-simple}
+# Simple linear relationship:
+      set.seed(2022)
+      n <- 100
+      temp <- rnorm(n)
+      shark <- rnorm(n, temp)  # deviations around the temperature means.
+      ice_cream <- rnorm(n, -shark)
+      
+      plot(shark, temp)
+      plot(ice_cream, temp)
+```
+
