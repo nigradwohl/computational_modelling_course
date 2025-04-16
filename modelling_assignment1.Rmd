@@ -1,5 +1,5 @@
 ---
-title: 'Computational modelling of judgments, decisions and cognition -- Assignments 1: Getting sttarted'
+title: 'Computational modelling of judgments, decisions and cognition -- Assignments 1: Getting started'
 author: "Dr. Nico Gradwohl"
 date: "`r Sys.Date()`"
 output: html_document
@@ -43,21 +43,22 @@ install.packages("ggplot2")
 # Task 2: A simple data model 
 
 The following code-chunk simulates some data (for now you do not need to understand how) and outputs a histogram.
+They describe a ficticious relationship between alcohol and intelligence.
 
 ```{r TODO-simulate-data}
 # Taken from McElreath (YYYY)
-    # 5M1: Spurious correlation:
-        set.seed(2022)
-        n <- 100
-        temp <- rnorm(n)
-        shark <- rnorm(n, temp)  # deviations around the temperature means.
-        ice_cream <- rnorm(n, -shark)
-        
-        plot(shark, temp)
-        plot(ice_cream, temp)
-            
 
-            
+      set.seed(2022)
+      n <- 100
+      temp <- rnorm(n)
+      shark <- rnorm(n, temp)  # deviations around the temperature means.
+      ice_cream <- rnorm(n, -shark)
+      
+      plot(shark, ice_cream)
+      plot(shark, temp)
+      plot(ice_cream, temp)
+      
+      
     # 5M2: Masked relationship:
         n <- 100
         learn_speed <- rnorm(n)
@@ -78,25 +79,31 @@ Find any model for this data. **TODO!**
     + fit a model 
 
 
-## Answer Task 2:
+### Task 2a: Plot the relationship between alcohol and learning speed (`learn_speed`)  
 
-```{r task2}
-            lm(ice_cream ~ temp)
-            lm(ice_cream ~ shark)
-            lm(ice_cream ~ temp + shark)
-            
-            lm(learn_speed ~ alcohol)
-            lm(learn_speed ~ intelligence)
-            lm(learn_speed ~ alcohol + intelligence)
+```{r task2a}
+# ENTER YOUR SOLUTIONS TO TASK 2a HERE 
 ```
 
+### Task 2b: Find a model for the relationship between alcohol and learning speed  
 
-**TODO: BASE ON MCELREATH EXAMPLE?**
+
+```{r task2b}
+# ENTER YOUR SOLUTION TO TASK 2b HERE 
+```
+
+### Task 2c: What do the model parameters mean? 
+
+*[WRITE YOUR SOLUTION TO TASK 2c HERE]*
 
 
-# Bonus task 
+### Task 2d (optional): Now look at the relationship between alcohol and intelligence. 
 
-**Fitting a non-linear model?**
-**Detecting non-linear relationship?**
+```{r bonus-task2d}
 
-* Name (potentially hidden) assumptions 
+```
+
+*[WRITE YOUR SOLUTION TO THE BONUS TASK HERE]*
+
+
+
