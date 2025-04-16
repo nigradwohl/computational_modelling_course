@@ -31,7 +31,7 @@ library(ggplot2)  # important package for plotting.
 This task 
 
 *Note*: 
-You may also work in python and use a Jupyter notebook, howerver, I can help you less with that.
+You may also work in python and use a Jupyter notebook, however, I can help you less with that.
 
 ```{r instructions-install-packages, eval=FALSE}
 install.packages("dplyr")
@@ -42,41 +42,20 @@ install.packages("ggplot2")
 
 # Task 2: A simple data model 
 
-The following code-chunk simulates some data (for now you do not need to understand how) and outputs a histogram.
-They describe a ficticious relationship between alcohol and intelligence.
+The following code-chunk simulates some data (for now you do not need to understand how -- but try to understand the code anyway).
+They describe a fictitious relationship between alcohol consumption (variable `alcohol`) and learn speed (variable `learn_speed`, i.e., how quickly someone grasps a concept).
+
 
 ```{r TODO-simulate-data}
 # Taken from McElreath (YYYY)
+    # Simulate data:
+        set.seed(42)
 
-      set.seed(2022)
-      n <- 100
-      temp <- rnorm(n)
-      shark <- rnorm(n, temp)  # deviations around the temperature means.
-      ice_cream <- rnorm(n, -shark)
-      
-      plot(shark, ice_cream)
-      plot(shark, temp)
-      plot(ice_cream, temp)
-      
-      
-    # 5M2: Masked relationship:
         n <- 100
         learn_speed <- rnorm(n)
-        # TODO: Make one relationship non-linear?
         alcohol <- rnorm(n, learn_speed)  # assuming that more intelligent people drink more
-        intelligence <- rnorm(n, alcohol - learn_speed)
-        
-        plot(intelligence, learn_speed)
-        plot(alcohol, learn_speed)
-            
-
 ```
 
-Find any model for this data. **TODO!**
-
-* Model for temperature or learn speed
-    + plot the data for your model 
-    + fit a model 
 
 
 ### Task 2a: Plot the relationship between alcohol and learning speed (`learn_speed`)  
@@ -97,10 +76,15 @@ Find any model for this data. **TODO!**
 *[WRITE YOUR SOLUTION TO TASK 2c HERE]*
 
 
-### Task 2d (optional): Now look at the relationship between alcohol and intelligence. 
+### Task 2d (optional): 
+
+Now, we also got some data for individuals' `intelligence`.
+
+Look at the relationship between alcohol, intelligence and loearning speed). 
+What might be happening here?
 
 ```{r bonus-task2d}
-
+  intelligence <- rnorm(n, alcohol - learn_speed)
 ```
 
 *[WRITE YOUR SOLUTION TO THE BONUS TASK HERE]*
