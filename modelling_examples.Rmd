@@ -11,6 +11,11 @@ editor_options:
 library(dplyr)  # basic package for changing data structures.
 
 library(ggplot2)  # important package for plotting.
+
+thlg <- theme(axis.title = element_text(size = 16),
+              axis.text = element_text(size = 14),
+              legend.title = element_text(size = 14),
+              legend.text = element_text(size = 12))
 ```
 
 
@@ -45,14 +50,16 @@ library(ggplot2)  # important package for plotting.
               pred_p = Ap + Bp * (t + 1)^(-bet),
               pred_e = Ae + Be * exp(-alp * t)) %>%
     ggplot(aes(x = t)) +
-    geom_point(aes(y = RTp)) +
+    geom_point(aes(y = RTp), size = 3, alpha = 0.5) +
     geom_line(aes(y = pred_p, linetype = "Power law"), linewidth = 1) +
     # geom_line(aes(y = pred_e, linetype = "Exponetial law"), linewidth = 1) +
     # Linear:
     geom_smooth(aes(y = RTp, linetype = "Linear"), method = "lm", se = FALSE, linewidth = 1, color = "black") + 
     labs(y = "RT (ms)", linetype = "") +
-    theme_bw()
+    theme_bw() +
+    thlg
 
+  ggsave("_figures/pow_lin.png", height = 12, width = 16, unit = "cm")
 ```
 
 ## Tax cut 
@@ -84,20 +91,66 @@ library(ggplot2)  # important package for plotting.
 
 ## Linear model 
 
-```{r mean-mod}
+```{r lin-rel}
+# Simple linear relationship:
+  n <- 100
+  set.seed(09234)
+  learn_speed <- rnorm(n)
+  alcohol <- rnorm(n, learn_speed)  # assuming that more intelligent people drink more  
+```
 
+
+```{r lin-dat}
+
+  plt_alc_learn <- data.frame(alcohol = alcohol, learn_speed = learn_speed) %>%
+    ggplot(aes(x = alcohol, y = learn_speed)) +
+    geom_point(size = 3) +
+    labs(x = "Alcohol Consumption", y = "Learn Speed", linetype = "") +
+    theme_bw() +
+    thlg
+
+# Show and save:
+plt_alc_learn
+
+ggsave("_figures/alc_learn_raw.png", height = 12, width = 12, unit = "cm")
+```
+
+
+```{r mean-mod}
+plt_alc_learn +
+    geom_hline(yintercept = mean(learn_speed), linewidth = 1)
+
+ggsave("_figures/alc_learn_mean.png", height = 12, width = 12, unit = "cm")
 ```
 
 
 ```{r lin-mod-simple}
-# Simple linear relationship:
-      set.seed(2022)
-      n <- 100
-      temp <- rnorm(n)
-      shark <- rnorm(n, temp)  # deviations around the temperature means.
-      ice_cream <- rnorm(n, -shark)
-      
-      plot(shark, temp)
-      plot(ice_cream, temp)
+  plt_alc_learn +
+      # Linear:
+      geom_abline(slope = 1, linewidth = 1) +
+      annotate(geom = "polygon", x = c(1, 0, 1), y = c(1, 0, 0),
+              linetype = "dashed", color = "black",
+              alpha = 0.3)
+  
+  ggsave("_figures/alc_learn_lm.png", height = 12, width = 12, unit = "cm")
+
+
+# Fitted model:
+  fit <- lm(learn_speed ~ alcohol)
+  summary(fit)
+
+  ic <- coef(fit)["(Intercept)"]   # intercept.
+  slp <- coef(fit)["alcohol"]
+
+plt_alc_learn +
+    # Linear:
+    geom_smooth(method = "lm", se = FALSE, linewidth = 1, color = "black") +
+    geom_abline(intercept = ic, slope = slp, linewidth = 1) +
+    annotate(geom = "polygon", x = c(1, 0, 1), y = c(1, 0, 0) * slp + ic,
+            linetype = "dashed", color = "black",
+            alpha = 0.3) +
+    annotate(geom = "text", x = 1, y = slp/2 + ic, label = round(slp, 2), size = 6, hjust = 0)
+
+ggsave("_figures/alc_learn_fit.png", height = 12, width = 12, unit = "cm")
 ```
 
