@@ -1,0 +1,34 @@
+---
+title: 'Computational modelling of judgments, decisions and cognition -- Assignments 2: Getting started'
+author: "[YOUR NAME]"
+date: "`r Sys.Date()`"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+```
+
+
+# General rules for handing in assignments 
+
+
+1. You have to hand in all assignments except for two.
+
+1. Upload your assignments to the joint git repository. 
+
+1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
+
+1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
+
+
+# [TODO] Task 1: Grid search 
+
+
+# [MAYBE-TODO] Task 2: Simulate from a n > 1 parameter model with a grid
+
+**Provide a difficult (or difficult-looking) formula and let them translate** 
