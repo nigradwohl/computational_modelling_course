@@ -1,6 +1,6 @@
 ---
 title: 'Computational modelling of judgments, decisions and cognition -- Assignments 1: Getting started'
-author: "Dr. Nico Gradwohl"
+author: "[YOUR NAME]"
 date: "`r Sys.Date()`"
 output: html_document
 editor_options: 
