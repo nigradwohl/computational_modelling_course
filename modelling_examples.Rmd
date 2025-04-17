@@ -154,3 +154,15 @@ plt_alc_learn +
 ggsave("_figures/alc_learn_fit.png", height = 12, width = 12, unit = "cm")
 ```
 
+
+
+# Session 1 
+
+## [TODO] Illustrate Grid search 
+
+
+## [TODO] Illustrate Nelder-mead -- Simplex 
+
+
+
+## [TODO] Simulations 
