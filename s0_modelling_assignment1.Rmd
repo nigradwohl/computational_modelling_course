@@ -90,4 +90,11 @@ What might be happening here?
 *[WRITE YOUR SOLUTION TO THE BONUS TASK HERE]*
 
 
+### Task 3: Watching Videos
+
+To familiarize yourself with some iportant concepts, watch the following videos: 
+
+*	Probability vs. likelihood: https://youtu.be/bXGjQnpGGIo?si=KoFrTJyyDYh6vSTR
+*	Maximum likelihood estimation: https://youtu.be/66FqSpf1trA?si=hoUD6sen0XZUUpk-
+
 
