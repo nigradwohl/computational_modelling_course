@@ -46,21 +46,44 @@ thlg <- theme(axis.title = element_text(size = 16),
   # Linear:
 
 # Plotting:
-  data.frame(t = t, RTp = RTp, RTe = RTe,
+  pow_lin_dat <- data.frame(t = t, RTp = RTp, RTe = RTe,
               pred_p = Ap + Bp * (t + 1)^(-bet),
               pred_e = Ae + Be * exp(-alp * t)) %>%
     ggplot(aes(x = t)) +
     geom_point(aes(y = RTp), size = 3, alpha = 0.5) +
-    geom_line(aes(y = pred_p, linetype = "Power law"), linewidth = 1) +
+    labs(y = "RT (ms)", linetype = "") +
+    geom_line(aes(y = pred_p, linetype = "Power law"), linewidth = 1, color = NA) +
     # geom_line(aes(y = pred_e, linetype = "Exponetial law"), linewidth = 1) +
     # Linear:
-    geom_smooth(aes(y = RTp, linetype = "Linear"), method = "lm", se = FALSE, linewidth = 1, color = "black") + 
-    labs(y = "RT (ms)", linetype = "") +
+    geom_smooth(aes(y = RTp, linetype = "Linear"), method = "lm", se = FALSE, linewidth = 1, color = NA) +
     theme_bw() +
     thlg
 
+  pow_lin_dat
+
+  ggsave("_figures/pow_lin_dat.png", height = 12, width = 16, unit = "cm")
+
+
+  pow_lin <- pow_lin_dat +
+    # geom_line(aes(y = pred_e, linetype = "Exponetial law"), linewidth = 1) +
+    # Linear:
+    geom_smooth(aes(y = RTp, linetype = "Linear"), method = "lm", se = FALSE, linewidth = 1, color = "black")
+
+  
+  pow_lin
+  ggsave("_figures/lin.png", height = 12, width = 16, unit = "cm")
+
+
+  pow_lin +
+    geom_line(aes(y = pred_p, linetype = "Power law"), linewidth = 1)
+
   ggsave("_figures/pow_lin.png", height = 12, width = 16, unit = "cm")
+
 ```
+
+
+
+
 
 ## Tax cut 
 
