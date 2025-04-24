@@ -14,12 +14,13 @@ library(ggplot2)  # important package for plotting.
 ```
 
 
+
 # General rules for handing in assignments 
 
 
-1. You have to hand in all assignments except for two.
+1. You have to hand in all assignments except for one.
 
-1. Upload your assignments to the joint git repository. 
+1. Upload your assignments to ilias (maybe later to git repository). 
 
 1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
 
@@ -52,7 +53,7 @@ They describe a fictitious relationship between alcohol consumption (variable `a
         set.seed(42)
 
         n <- 100
-        learn_speed <- rnorm(n)
+        learn_speed <- rnorm(n)  # random generation of data.
         alcohol <- rnorm(n, learn_speed)  # assuming that more intelligent people drink more
 ```
 
@@ -80,11 +81,11 @@ They describe a fictitious relationship between alcohol consumption (variable `a
 
 Now, we also got some data for individuals' `intelligence`.
 
-Look at the relationship between alcohol, intelligence and loearning speed). 
+Look at the relationship between alcohol, intelligence and learning speed). 
 What might be happening here?
 
 ```{r bonus-task2d}
-  intelligence <- rnorm(n, alcohol - learn_speed)
+  intelligence <- rnorm(n, alcohol - learn_speed)  # generate some ficticious data for intelligence. 
 ```
 
 *[WRITE YOUR SOLUTION TO THE BONUS TASK HERE]*
@@ -92,7 +93,7 @@ What might be happening here?
 
 ### Task 3: Watching Videos
 
-To familiarize yourself with some iportant concepts, watch the following videos: 
+To familiarize yourself with some important concepts, watch the following videos: 
 
 *	Probability vs. likelihood: https://youtu.be/bXGjQnpGGIo?si=KoFrTJyyDYh6vSTR
 *	Maximum likelihood estimation: https://youtu.be/66FqSpf1trA?si=hoUD6sen0XZUUpk-
