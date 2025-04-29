@@ -26,9 +26,21 @@ library(ggplot2)  # important package for plotting.
 1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
 
 
-# [TODO] Task 1: Grid search 
+# Task 1: Simulating data 
+
+1. Pick a model **CPT...** 
+
+1. [PROVIDE (FICTICIOUS) EXAMPLE ENVIRONMENT?] 
+
+1. Simulate data from a few hundred individuals with different parameters 
 
 
-# [MAYBE-TODO] Task 2: Simulate from a n > 1 parameter model with a grid
+# [TODO] Task 2: Grid search 
 
-**Provide a difficult (or difficult-looking) formula and let them translate** 
+**MAYBE also!**
+
+
+# [MAYBE-TODO] Task 3: Learn about Bayesian Statistics
+
+Watch the first 5 videos of the following playlist:
+https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
