@@ -19,6 +19,16 @@ thlg <- theme(axis.title = element_text(size = 16),
 ```
 
 
+# Ressources for data etc. 
+
+* Exercises for book. https://psy-farrell.github.io/computational-modelling//exercises/ 
+
+* Code from book: https://osf.io/ejfm4/files/osfstorage
+
+* Data and code from Tump et al. (2020) https://osf.io/ejfm4/files/osfstorage
+
+
+
 # Session 0 
 
 ## Example: Task performance 
