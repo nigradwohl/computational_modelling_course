@@ -17,9 +17,9 @@ library(ggplot2)  # important package for plotting.
 # General rules for handing in assignments 
 
 
-1. You have to hand in all assignments except for two.
+1. You have to hand in all assignments except for one ungraded assignment.
 
-1. Upload your assignments to the joint git repository. 
+1. Upload your assignments to ilias until Wednesday 3 pm. 
 
 1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
 
@@ -28,11 +28,9 @@ library(ggplot2)  # important package for plotting.
 
 # Task 1: Simulating data 
 
-1. Pick an environment: gambles, probability learning [**OR?**; **AND: REALLY DO THIS OR PICK ONE?**]
+1. Understand the gamble environment 
 
-1. Pick a model **CPT...** 
-
-1. Visualize the function(s) you use 
+1. Visualize the CPT function(s) you use 
 
 1. Simulate data from a few hundred individuals with different parameters (if)
 
@@ -65,8 +63,8 @@ gpairs <- data.frame(p = matrix(probs, ncol = 2),
 
 Pick one model *in addition* to Expected Value (EV), which has no parameters.
 
-**[TODO: PROVIDE GAMBLES IN THE LOASS AN GAIN DOMAIN BUT ALLOW TO FILTER -- should I select random gambles or interesting gambles?]**
-
+You may filter for gambles in the gain or loss domain.
+Please report what you did.
 
 ### Model suggestions  
 
@@ -139,71 +137,12 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 
 
-## Option 2: Probability learning data 
-
-In each round one of two options is rewarded with a unit reward (i.e., one point) the other is unrewarded.
-Individuals want to maximize their rewards.
-
-```{r generate-pdat}
-probdat <- seq(0.05, 0.95, by = 0.15)  # probabilities.
-
-# FUnction to generate rewards:
-curprob <- probdat[1]  # selecting a probability.
-
-tr <- 200  # 200 rounds.
-rbinom(tr, 1, curprob)  # get an outcome according to a bernoulli distribution.
-```
-
-
-
-### Model suggestions 
-
-
-#### Probability matching 
-
-Individuals select the options relative to their probability of being rewarded. 
-
-
-
-#### Simple reinforcement learning ($Q$-learning)
-
-Individuals *learn* about the best option. In each round $t$ they update a representation $Q$ of each option (also called "action").
-
-\[
-Q(t+1) = Q(t) + \alpha (r_t - Q_t)
-\]
-
-This means that the expectation at time $t+1$ is the previous expectation plus the weighted "surprise" about the outcome (reflected in the deviation of the outcome from the expectation).
-The impact of this is governed by the learning rate $\alpha \in [0;1]$.
-
-
-#### Simulating choices 
-
-If you want to simulate choices from $Q$-values for options A and B, you can use a softmax rule: 
-
-\[p_t(A) = \frac{e^{\phi Q_t(A)}}{e^{\phi Q_t(A)} + e^{\phi Q_t(B)}}\]
-
-with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being related to more random responding (inverse temperature parameter). 
-
-
-### [YOUR ASSIGNMENT HERE]
-
-Simulate choices from your model of choice for different probabilities from `probdat`.
-
-
-# [TODO] Task 2: Grid search 
-
-**MAYBE also! REQUIRES SOME CHOICE DATA etc. -- use simulated data from week before**
-
-
-
-
-# Task 3: Learn about Bayesian Statistics
+# Task 2: Learn about Bayesian Statistics
 
 Watch the first 9 videos of the following playlist (it is okay, if you don't watch all unti next session):
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
 
 
-# Task 4 (optional) 
+# Task 3 (optional) 
 
 Pick another model and or environment and simulate data from this. 
