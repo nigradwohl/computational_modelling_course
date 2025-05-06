@@ -11,7 +11,7 @@
 
 <meta name="author" content="[YOUR NAME]" />
 
-<meta name="date" content="2025-04-30" />
+<meta name="date" content="2025-05-06" />
 
 <title>Computational modelling of judgments, decisions and cognition – Assignments 2: Getting started</title>
 
@@ -353,69 +353,53 @@ display: none;
 <h1 class="title toc-ignore">Computational modelling of judgments,
 decisions and cognition – Assignments 2: Getting started</h1>
 <h4 class="author">[YOUR NAME]</h4>
-<h4 class="date">2025-04-30</h4>
+<h4 class="date">2025-05-06</h4>
 
 </div>
 
 
 <pre class="r"><code>library(dplyr)  # basic package for changing data structures.</code></pre>
 <pre><code>## 
-## Attaching package: &#39;dplyr&#39;</code></pre>
-<pre><code>## The following objects are masked from &#39;package:stats&#39;:
+## Attache Paket: &#39;dplyr&#39;</code></pre>
+<pre><code>## Die folgenden Objekte sind maskiert von &#39;package:stats&#39;:
 ## 
 ##     filter, lag</code></pre>
-<pre><code>## The following objects are masked from &#39;package:base&#39;:
+<pre><code>## Die folgenden Objekte sind maskiert von &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
 <pre class="r"><code>library(ggplot2)  # important package for plotting.</code></pre>
-<pre><code>## Warning: package &#39;ggplot2&#39; was built under R version 4.3.3</code></pre>
 <div id="general-rules-for-handing-in-assignments" class="section level1">
 <h1>General rules for handing in assignments</h1>
 <ol style="list-style-type: decimal">
-<li><p>You have to hand in all assignments except for two.</p></li>
-<li><p>Upload your assignments to the joint git repository.</p></li>
+<li><p>You have to hand in all assignments except for one ungraded
+assignment.</p></li>
+<li><p>Upload your assignments to ilias until Wednesday 3 pm.</p></li>
 <li><p>Assignments are <em>not</em> graded, unless it says so in the
 beginning of the assignment.</p></li>
 <li><p>You have to complete all numbered tasks; if there are one or more
 bonus tasks, you may skip them</p></li>
 </ol>
 </div>
-<div id="task-1-simulating-data" class="section level1">
-<h1>Task 1: Simulating data</h1>
-<ol style="list-style-type: decimal">
-<li><p>Pick data</p></li>
-<li><p>Pick a model <strong>CPT…</strong></p></li>
-<li><p>[PROVIDE (FICTICIOUS) EXAMPLE ENVIRONMENT?]</p></li>
-<li><p>Simulate data from a few hundred individuals with different
-parameters</p></li>
-</ol>
-<div id="gamble-data" class="section level2">
-<h2>Gamble data</h2>
-<p>These data represent choices between gambles. According to a model,
-individuals choose one gamble over the other.</p>
-<p>Each gamble <span class="math inline">\(j\)</span> consists of a
-probability <span class="math inline">\(p_j\)</span> and an outcome
-<span class="math inline">\(o_j\)</span> (for sake of simplicity the
-alternative outcome is zero and does not affect the calculated
-value).</p>
-<p>Pick one model <em>in addition</em> to Expected Value (EV), which has
-no parameters.</p>
-<p><strong>[TODO: PROVIDE GAMBLES IN THE LOASS AN GAIN DOMAIN BUT ALLOW
-TO FILTER – should I select random gambles or interesting
-gambles?]</strong></p>
-<div id="models" class="section level3">
-<h3>Models</h3>
-<p>All with <span class="math inline">\(p_i\)</span> being the
-probability of (monetary) outcome <span class="math inline">\(x_i\)</span> and <span class="math inline">\(k\)</span> being the number of outcomes in the
+<div id="modelling-gamble-data" class="section level1">
+<h1>Modelling Gamble Data</h1>
+<p>In this Assignment you will model gamble data. You will receive pick
+one (or more) of the suggested models, visualize their functions,
+receive code to simulate an environment and simulate choice data for the
+set of simulated gambles and output the result.</p>
+</div>
+<div id="model-suggestions" class="section level1">
+<h1>Model suggestions</h1>
+<p>All gambles consist of a probability, <span class="math inline">\(p_i\)</span> being the probability of (monetary)
+outcome <span class="math inline">\(x_i\)</span> and <span class="math inline">\(k\)</span> being the number of outcomes in the
 gamble.</p>
-<div id="expected-value-ev" class="section level4">
-<h4>Expected value (EV)</h4>
+<div id="expected-value-ev" class="section level2">
+<h2>Expected value (EV)</h2>
 <p><span class="math display">\[
 EV = \sum_{i=1}^k p_i x_i
 \]</span></p>
 </div>
-<div id="expected-utility-eu" class="section level4">
-<h4>Expected utility (EU)</h4>
+<div id="expected-utility-eu" class="section level2">
+<h2>Expected utility (EU)</h2>
 <p><span class="math display">\[
 EV = \sum_{i=1}^k p_i x_i^{\alpha}
 \]</span></p>
@@ -423,43 +407,106 @@ EV = \sum_{i=1}^k p_i x_i^{\alpha}
 diminishing marginal utility (additional money having less value than
 the previous dollar).</p>
 </div>
-<div id="cumulative-prospect-theory" class="section level4">
-<h4>Cumulative prospect theory</h4>
-<p>The subjective value <span class="math inline">\(V\)</span> of an
-option consists of the sum of decisions weights <span class="math inline">\(\p_i\)</span> times outcomes passed through a
+<div id="prospect-theory" class="section level2">
+<h2>Prospect theory</h2>
+<p>The values and probabilities of a gamble are transformed and used as
+a basis for decision making.</p>
+<p>The subjective value <span class="math inline">\(V(A)\)</span> of
+gamble A consists of the sum of decisions weights <span class="math inline">\(\pi_i\)</span> times outcomes passed through a
 function <span class="math inline">\(v(x_i)\)</span> with <span class="math inline">\(v(0) = 0\)</span> <span class="citation">[e.g.,
 @GloecknerPachur12]</span></p>
 <p><span class="math display">\[
-V = \sum_{i=1}^k \pi_i v(x_i)
+V(A) = \sum_{i=1}^k \pi_i v(x_i)
 \]</span></p>
 <p>Functions differ for positive and negative outcomes. You can decide
 if you want to focus on the gain-domain (positive outcomes) by filtering
 the inputs (“gambles”).</p>
-<p>You can look fr your own functions in the literature. I suggest the
-following:</p>
+<p>I suggest the following functions (You can look for your own
+functions in the literature):</p>
+<p>Probability weighting function:</p>
+<p>Probabilities are weighted by:</p>
+<p><span class="math display">\[\pi(p_i) = \frac{p_i^c}{[p_i^c + (1 -
+p_i^c)]^{1/c}}\]</span></p>
+<p>with <span class="math inline">\(c = \gamma\)</span> for gains and
+<span class="math inline">\(c = \delta\)</span> for losses. For
+simplicity I suggest to assume that <span class="math inline">\(\gamma =
+\delta &lt; 1\)</span>.</p>
+<p>Value functions:</p>
 <p><span class="math display">\[
 \begin{array}{rcl}
 v(x) = x^{\alpha} &amp; \mbox{for} &amp; x \geq 0 \\
 v(x) = -\lambda(-x)^\beta &amp; \mbox{for} &amp; x &lt; 0 \\
 \end{array}
 \]</span></p>
-<p>For simplicity I suggest to assume that <span class="math inline">\(\alpha = \beta\)</span> and maybe even <span class="math inline">\(\lamda = 1\)</span> (i.e., no stronge weighting of
-losses).</p>
+<p>For simplicity I suggest to assume that <span class="math inline">\(\alpha = \beta &lt; 1\)</span> and maybe even
+<span class="math inline">\(\lambda = 1\)</span> (i.e., no stronger
+weighting of losses resulting in <em>loss aversion</em>).</p>
+<div id="cumulative-prospect-theory" class="section level3">
+<h3>Cumulative Prospect Theory</h3>
+<p>If you want a challenge, you can also try to fit Cumulative Prospect
+Theory:</p>
+<p>To make it cumulative prospect theory. This uses a rank-dependent
+weighting scheme:</p>
+<p>A gamble has <em>positive</em> outcomes <span class="math inline">\(x_m &gt; \ldots &gt; x_1 \geq 0\)</span> and
+<em>negative</em> outcomes <span class="math inline">\(0 &gt; y_1 &gt;
+\ldots &gt; y_n\)</span> with corresponding probabilities <span class="math inline">\(p_m \ldots p_1\)</span> and <span class="math inline">\(q_1 \ldots q_n\)</span>.</p>
+<p><span class="math display">\[
+\begin{array}{c}
+\pi_m^+ = w^+(p_m) \\
+\pi_m^- = w^-(q_n) \\
+\pi_i^+ = w^+(p_i + \ldots + p_m) - w^+(p_{i+1} + \ldots + p_m) \\
+\pi_i^- = w^-(q_j + \ldots + q_n) - w^+(q_{i+1} + \ldots + p_n) \\
+\end{array}
+\]</span></p>
+<p>and</p>
+<p><span class="math display">\[
+w^+ = \frac{\delta^+ p^{\gamma^+}}{\delta^+ p^{\gamma^+} + (1 -
+p)^{\gamma^+}}
+\]</span></p>
+<p><span class="math display">\[
+w^- = \frac{\delta^- p^{\gamma^-}}{\delta^- p^{\gamma^-} - (1 -
+p)^{\gamma^-}}
+\]</span></p>
+<p>If you use this function you may simplify things and assume <span class="math inline">\(\delta^+ = \delta^- = 1\)</span> and/or <span class="math inline">\(\gamma^+ = \gamma^-\)</span>.</p>
 </div>
 </div>
+<div id="simulating-choices" class="section level2">
+<h2>Simulating choices</h2>
+<p>If you want to simulate choices you can use a softmax rule:</p>
+<p><span class="math display">\[p(A) = \frac{e^{\phi v(A)}}{e^{\phi
+v(A)} + e^{\phi v(B)}}\]</span></p>
+<p>with <span class="math inline">\(\phi\)</span> indicating how noisy
+the responding is, with smaller <span class="math inline">\(\phi\)</span> being related to more random
+responding (inverse temperature parameter).</p>
 </div>
 </div>
-<div id="todo-task-2-grid-search" class="section level1">
-<h1>[TODO] Task 2: Grid search</h1>
-<p><strong>MAYBE also! REQUIRES SOME CHOICE DATA etc.</strong></p>
+<div id="task-1-visualizing-functions" class="section level1">
+<h1>Task 1: Visualizing functions</h1>
+<p>Visualize the function(s) in the model you use to describe the choice
+data.</p>
 </div>
-<div id="task-3-learn-about-bayesian-statistics" class="section level1">
-<h1>Task 3: Learn about Bayesian Statistics</h1>
-<p>Watch the first 9 videos of the following playlist (it is okay, if
-you don’t watch all unti next session): <a href="https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&amp;si=emFyWAjPCWcwEFs6" class="uri">https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&amp;si=emFyWAjPCWcwEFs6</a></p>
+<div id="task-2-understanding-the-environment" class="section level1">
+<h1>Task 2: Understanding the Environment</h1>
+<p>Set your own seed, run the generation of the environment and
+understand the gamble environment</p>
 </div>
-<div id="task-4-optional" class="section level1">
-<h1>Task 4 (optional)</h1>
+<div id="task-3-simulating-data" class="section level1">
+<h1>Task 3: Simulating Data</h1>
+<ol style="list-style-type: decimal">
+<li><p>Simulate data from about hundred individuals with different
+parameters.</p></li>
+<li><p>Visualize the value (and probability) judgments and choice
+probabilities</p></li>
+<li><p>Obtain the corresponding choice data</p></li>
+</ol>
+</div>
+<div id="task-4-learn-about-bayesian-statistics" class="section level1">
+<h1>Task 4: Learn about Bayesian Statistics</h1>
+<p>Watch the first 9 videos of the following youtube playlist (it is
+okay, if you don’t watch all unti next session): <a href="https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&amp;si=emFyWAjPCWcwEFs6" class="uri">https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&amp;si=emFyWAjPCWcwEFs6</a></p>
+</div>
+<div id="task-5-optional" class="section level1">
+<h1>Task 5 (optional)</h1>
 <p>Pick another model and or environment and simulate data from
 this.</p>
 </div>
