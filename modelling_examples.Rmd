@@ -224,6 +224,88 @@ ggsave("_figures/alc_learn_fit.png", height = 12, width = 12, unit = "cm")
 
 # Session 1 
 
+## Mass vs. Density 
+
+```{r mass-dens}
+n_correct <- 0:10
+pvals <- dbinom(n_correct, size = 10, prob = .75)
+pmass <- data.frame(n_correct = factor(n_correct), pn = pvals) %>%
+  ggplot(aes(x = n_correct, y = pn)) +
+  geom_col() +
+  # scale_x_binned(n.breaks = 11, show.limits = TRUE, right = FALSE) +
+  theme_classic()
+
+pmass
+ggsave("_figures/pmass.png", height = 12, width = 12, unit = "cm")
+
+pmass +
+  annotate(geom = "segment", 
+           x = 8, y = 0, yend = pvals[n_correct == 7], linetype = "dashed", linewidth = 1) +
+  annotate(geom = "segment", 
+           x = 0, xend = 8, y = pvals[n_correct == 7], linetype = "dashed", linewidth = 1) +
+  annotate(geom = "point", x = 8, y = pvals[n_correct == 7], size = 3)
+
+ggsave("_figures/pmass_lik.png", height = 12, width = 12, unit = "cm")
+
+# Density:
+tr <- seq(0, 30, by = 0.01)
+dvals <- dlnorm(tr, 2, 1.7)
+pdens <- data.frame(t = tr, dens = dvals) %>%
+  ggplot(aes(x = tr, y = dens)) +
+  geom_line(linewidth = 1) +
+  theme_classic()
+
+pdens
+ggsave("_figures/pdens.png", height = 12, width = 12, unit = "cm")
+
+pdens +
+  annotate(geom = "segment", 
+           x = 7, y = 0, yend = dvals[tr == 7], linetype = "dashed", linewidth = 1) +
+  annotate(geom = "segment", 
+           x = 0, xend = 7, y = dvals[tr == 7], linetype = "dashed", linewidth = 1) +
+  annotate(geom = "point", x = 7, y = dvals[tr == 7], size = 3)
+ggsave("_figures/pdens_lik.png", height = 12, width = 12, unit = "cm")
+```
+
+
+
+## Visualize Prospect Theory 
+
+Value function 
+
+```{r valfun}
+# Define function:
+value_function <- function(x, alp, bet = alp, lamb){
+  ifelse(x >= 0, x^alp, -lamb * (-x)^bet)
+}
+
+
+# Visualize:
+  x <- seq(-100, 100, by = 1)  # define values.
+
+
+# Create combinations of different parameters:
+  dm <- expand.grid(alp = c(0.1, 0.5, 0.8), lambda = c(1, 2))
+
+# Get data for each combination:
+  outlist <- apply(dm, MARGIN = 1, FUN = function(rw){
+    data.frame(x = x, V = value_function(x, alp = rw[1], lamb = rw[2]), alp = rw[1], lamb = rw[2]) 
+  })
+
+  outdat <- do.call(rbind, outlist)  # combine the list into a single data.frame.
+
+outdat %>%
+  ggplot(aes(x = x, y = V, color = alp, linetype = factor(lamb), group = interaction(lamb, alp))) +
+  geom_line(linewidth = 1) +
+  scale_color_distiller(palette = "Spectral") +
+  theme_classic()
+
+ggsave("_figures/valfun.png", height = 12, width = 12, unit = "cm")
+```
+
+
+# Session 2
+
 ## [TODO] Illustrate Grid search 
 
 
