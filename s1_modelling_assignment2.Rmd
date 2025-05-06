@@ -133,7 +133,7 @@ If you want to simulate choices you can use a softmax rule:
 
 with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being related to more random responding (inverse temperature parameter). 
 
-
+You can then pass the choice probability to the `rbinom()` or `sample()` functions to obtain a choice based on the probability.
 
 
 
