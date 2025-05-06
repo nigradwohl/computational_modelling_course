@@ -26,58 +26,25 @@ library(ggplot2)  # important package for plotting.
 1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
 
 
-# Task 1: Simulating data 
 
-1. Understand the gamble environment 
+# Modelling Gamble Data
 
-1. Visualize the CPT function(s) you use 
-
-1. Simulate data from a few hundred individuals with different parameters (if)
+In this Assignment you will model gamble data.
+You will receive pick one (or more) of the suggested models, visualize their functions, receive code to simulate an environment and simulate choice data for the set of simulated gambles and output the result.
 
 
-## Option 1: Gamble data 
+# Model suggestions  
 
-These data represent choices between gambles.
-According to a model, individuals choose one gamble over the other.
+All gambles consist of a probability, $p_i$ being the probability of (monetary) outcome $x_i$ and $k$ being the number of outcomes in the gamble.
 
-Each gamble $j$ consists of a probability $p_j$ and an outcome $o_j$ (for sake of simplicity the alternative outcome is zero and does not affect the calculated value).
-
-
-```{r generate-gambles}
-ngamble <- 50
-
-probs <- round(runif(ngamble * 3, 0, 1), 2)  # Sample probabilities from a uniform distribution.
-outcomes_pos <- round(runif(ngamble, 0, 100))
-outcomes_neg <- round(runif(ngamble, -100, -1))
-outcomes_mix <- round(runif(ngamble, -100, 100))
-
-# Create gamble pairs to simulate choices:
-gpairs <- data.frame(p = matrix(probs, ncol = 2),
-                     o = rbind(matrix(outcomes_pos, ncol = 2),
-                               matrix(outcomes_neg, ncol = 2),
-                               matrix(outcomes_mix, ncol = 2)),
-                     type = rep(c("gain", "loss", "mix"), each = ngamble/2)
-                     )
-```
-
-
-Pick one model *in addition* to Expected Value (EV), which has no parameters.
-
-You may filter for gambles in the gain or loss domain.
-Please report what you did.
-
-### Model suggestions  
-
-All with $p_i$ being the probability of (monetary) outcome $x_i$ and $k$ being the number of outcomes in the gamble.
-
-#### Expected value (EV) 
+## Expected value (EV) 
 
 \[
 EV = \sum_{i=1}^k p_i x_i
 \]
 
 
-#### Expected utility (EU) 
+## Expected utility (EU) 
 
 \[
 EV = \sum_{i=1}^k p_i x_i^{\alpha}
@@ -87,12 +54,14 @@ with $\alpha < 1$ representing diminishing marginal utility (additional money ha
 
 
 
-#### Cumulative prospect theory 
+## Prospect theory 
 
-The subjective value $V$ of an option consists of the sum of decisions weights $\p_i$ times outcomes passed through a function $v(x_i)$ with $v(0) = 0$ [e.g., @GloecknerPachur12]
+The values and probabilities of a gamble are transformed and used as a basis for decision making.
+
+The subjective value $V(A)$ of gamble A consists of the sum of decisions weights $\pi_i$ times outcomes passed through a function $v(x_i)$ with $v(0) = 0$ [e.g., @GloecknerPachur12]
 
 \[
-V = \sum_{i=1}^k \pi_i v(x_i)
+V(A) = \sum_{i=1}^k \pi_i v(x_i)
 \]
 
 Functions differ for positive and negative outcomes.
@@ -110,6 +79,7 @@ Probabilities are weighted by:
 with $c = \gamma$ for gains and $c = \delta$ for losses. For simplicity I suggest to assume that $\gamma = \delta < 1$.
 
 
+
 Value functions:
 
 \[
@@ -122,8 +92,40 @@ v(x) = -\lambda(-x)^\beta & \mbox{for} & x < 0 \\
 For simplicity I suggest to assume that $\alpha = \beta < 1$ and maybe even $\lambda = 1$ (i.e., no stronger weighting of losses resulting in *loss aversion*).
 
 
+### Cumulative Prospect Theory 
 
-#### Simulating choices 
+If you want a challenge, you can also try to fit Cumulative Prospect Theory:
+
+To make it cumulative prospect theory. This uses a rank-dependent weighting scheme: 
+
+A gamble has *positive* outcomes $x_m > \ldots > x_1 \geq 0$ and *negative* outcomes $0 > y_1 > \ldots > y_n$ with corresponding probabilities $p_m \ldots p_1$ and $q_1 \ldots q_n$.
+
+\[
+\begin{array}{c}
+\pi_m^+ = w^+(p_m) \\
+\pi_m^- = w^-(q_n) \\
+\pi_i^+ = w^+(p_i + \ldots + p_m) - w^+(p_{i+1} + \ldots + p_m) \\
+\pi_i^- = w^-(q_j + \ldots + q_n) - w^+(q_{i+1} + \ldots + p_n) \\
+\end{array}
+\]
+
+and 
+
+\[
+w^+ = \frac{\delta^+ p^{\gamma^+}}{\delta^+ p^{\gamma^+} + (1 - p)^{\gamma^+}}
+\]
+
+\[
+w^- = \frac{\delta^- p^{\gamma^-}}{\delta^- p^{\gamma^-} - (1 - p)^{\gamma^-}}
+\]
+
+
+If you use this function you may simplify things and assume $\delta^+ = \delta^- = 1$ and/or $\gamma^+ = \gamma^-$.
+$\gamma$ and $\delta$ separate curvature and elevation of the function.
+
+
+
+## Simulating choices 
 
 If you want to simulate choices you can use a softmax rule: 
 
@@ -133,16 +135,36 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 
 
-### [YOUR ASSIGNMENT HERE]
 
 
 
-# Task 2: Learn about Bayesian Statistics
 
-Watch the first 9 videos of the following playlist (it is okay, if you don't watch all unti next session):
+# Task 1: Visualizing functions
+
+Visualize the function(s) in the model you use to describe the choice data.
+
+
+# Task 2: Understanding the Environment
+
+Set your own seed, run the generation of the environment and understand the gamble environment 
+
+
+# Task 3: Simulating Data
+
+1. Simulate data from about hundred individuals with different parameters.
+
+1. Visualize the value (and probability) judgments and choice probabilities 
+
+1. Obtain the corresponding choice data 
+
+
+
+# Task 4: Learn about Bayesian Statistics
+
+Watch the first 9 videos of the following youtube playlist (it is okay, if you don't watch all unti next session):
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
 
 
-# Task 3 (optional) 
+# Task 5 (optional) 
 
 Pick another model and or environment and simulate data from this. 
