@@ -476,25 +476,32 @@ update_q <- function(qprev,  # vector of previous q values
 ```{r run-sims}
 theta_cur <- 0.1
 
-outlist <- lapply(c(0.2, 0.5, 0.9), FUN = function(p){
-  simout <- simfun(theta = c(0.9, theta_cur), nind = 1, op_prob = c(p, 1-p))
+dm <- expand.grid(theta_cur = c(0.2, 0.8),
+                  p = c(0.2, 0.5, 0.9))
 
-  soft <- 3^(10 * theta_cur) - 1  
+outlist <- lapply(1:nrow(dm), FUN = function(rw){
+  simout <- simfun(theta = c(0.9, dm$theta_cur[rw]), nind = 1, op_prob = c(dm$p[rw], 1-dm$p[rw]))
+
+  soft <- 3^(10 * dm$theta_cur[rw]) - 1  
 
   optval_mat_tr <- t(apply(simout$optval[1,,], MAR = 2, function(x) x - max(x)))
   oprobs <- exp(optval_mat_tr * soft)
-  data.frame(tr = 1:length(simout$cmat), p = p, oval = simout$optval[,2,], oprob = (oprobs/rowSums(oprobs))[,2], 
+  data.frame(tr = 1:length(simout$cmat), p = dm$p[rw], theta = dm$theta_cur[rw],
+        oval = simout$optval[,2,], oprob = (oprobs/rowSums(oprobs))[,2], 
         choice = simout$cmat)
 })
 
 
 do.call(rbind, outlist) %>%
   ggplot(aes(x = tr, y = oprob, color = factor(p))) +
-  facet_grid(. ~ p) +
-  geom_line(linewidth = 1, alpha = 0.7) +
+  facet_grid(theta ~ p, labeller = label_both) +
+  geom_line(linewidth = 0.5, alpha = 0.7) +
   geom_point(aes(y = choice), position = position_jitter(height = 0.01)) +
   scale_color_brewer(palette = "Dark2") +
-  theme_bw()
+  theme_bw() +
+  theme(legend.position = "bottom")
+
+ggsave("_figures/rl_example.png", height = 16, width = 24, unit = "cm")
 ```
 
 
