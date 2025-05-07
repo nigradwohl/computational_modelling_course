@@ -304,6 +304,200 @@ ggsave("_figures/valfun.png", height = 12, width = 12, unit = "cm")
 ```
 
 
+## Visualize MAB 
+
+```{r generate-pdat}
+probdat <- seq(0.05, 0.95, by = 0.15)  # probabilities.
+
+# FUnction to generate rewards:
+curprob <- probdat[1]  # selecting a probability.
+
+tr <- 200  # 200 rounds.
+rbinom(tr, 1, curprob)  # get an outcome according to a bernoulli distribution.
+
+# Simple Q-learning:-----------------
+  get_cmat <- function(choice, input){
+    
+    # Input matrix with row and column indices and values:
+    inp <- as.matrix(cbind(1:length(choice), choice, input))
+    
+    # Get own rewards for each choice:
+    cmat <- matrix(0, ncol = 2, nrow = length(choice)) 
+    cmat[inp[,1:2]] <- inp[, 3]
+    
+    return(cmat)
+    
+  }
+
+  # Utility function:
+  utpay <- function(rew, choice) {
+  
+    # Input matrix with row and column indices and values:
+    paymat <- get_cmat(choice = choice, input = rew)
+    
+    return(paymat)
+
+  }
+
+update_q <- function(qprev,  # vector of previous q values
+                     ut,  # vector of rewards / utilities.
+                     alp,  # alpha
+                     update_unchosen = TRUE,
+                     choices = NA
+)  {
+  
+  
+  pred_err <- ut - qprev  # prediction error.
+  
+  # Should the unchosen option be updated?
+  if(!update_unchosen){
+    # Set prediction error == 0 for unchosen option:
+    pred_err[3 - choices] <- 0
+      # Note: Replace 2 by length(options) for more than 2 options.
+      # Alternatively: Update the unchosen and rewarded option with 1? 
+    # ut[cbind(1:3, choices + 1)]  # rewards from chosen.
+    
+  }
+  
+  qnew <- qprev + alp * pred_err
+  
+  return(qnew)
+  
+}
+
+
+  simfun <- function(theta, competition = TRUE, op_prob = c(0.5, 0.5),
+                       utfun = utpay, nind = 3, maxtr = 200, maxrew = 1){
+      
+      ## 4.1 Get parameters:  
+      lpar <- theta[1]  # get corresponding learning parameter phi/alpha.
+      soft <- theta[length(theta)]  # softmax parameter is always last in list!.
+      
+      # For mimicking Schulze et al., the softmax paramter is transformed
+      # (we use soft instead of c to avoid collision):
+      
+      soft <- 3^(10 * soft) - 1  
+      
+      # First round: -------------------------------------------------------
+      # Choices (rows are rounds, columns individuals):
+      cmat <- matrix(sample(c(0, 1), size = nind, prob = c(0.5, 0.5), replace = TRUE),
+                     nrow = 1)
+      
+      # Rewards (rows are rounds, columns individuals):
+      rew_choice <- sample(c(0, 1), size = 1,
+                           prob = op_prob)
+      rmat <- ifelse(rew_choice == cmat & any(rew_choice == cmat),  
+                      # if any chose the rewarded option for all.
+                     competition * maxrew/sum(rew_choice == cmat) +
+                       (1 - competition) * maxrew,  # maximum reward distributed.  
+                     0)
+      
+      # utfun(rew = rmat[1, ], choice = cmat[1,])
+      utmat <- array(rep(0, 2 * nind * maxtr), dim = c(nind, 2, maxtr))  # utility matrix in given round.
+      # Individuals are rows, opotions are columns.
+      
+      utmat[, rew_choice + 1, 1] <- rmat  # add rewarded option.
+      # TODO: Translate utuitlity if necessary.
+      utmat[,,1:2]
+      
+      
+      ## 3.3 Initialize option value matrix:
+      optval_mat <- array(rep(NA, 2 * nind * maxtr), dim = c(nind, 2, maxtr))   # option values for each choice
+      optval_mat[,,1] <- 0
+      
+      
+      
+    # 4.2 Loop over subsequent trials: ---------------------------------
+      for(tr in 2:maxtr) {
+    
+    
+        # Learning:
+        ## 4.2.1 Get data from previous trial:
+        choices <- cmat[tr - 1,]  # choices in previous round.
+        pi_cur <- utmat[, , tr - 1]  # get utilities from previous trial.
+    
+        ## 4.2.2 Update learned values:
+    
+        # Which formulation is used?
+        # TODO: Probably this is actually obsolete as both functions are essentially the same!
+    
+        # a) A learning rule:
+        # Matrix of option values in current round:
+        optval_mat_tr <- update_q(qprev = optval_mat[,,tr - 1],
+                                  ut = pi_cur,
+                                  alp = lpar)
+    
+        if(is.null(dim(optval_mat_tr))){
+          dim(optval_mat_tr) <- c(nind, 2)
+        }
+    
+        # Save option value matrix:
+        optval_mat[,,tr] <- optval_mat_tr  # get a matrix of q-values.
+    
+        # Choices:
+        # subtraction of each row's maximum to avoid overflow problems.
+        optval_mat_tr <- t(apply(optval_mat_tr, MAR = 1, function(x) x - max(x)))
+    
+        # Adapted from Charley:
+        p <- exp(optval_mat_tr * soft)  # Softmax rule.
+        # TODO: Use division or multiplication?
+    
+        p <- p/rowSums(p)  # get probabilities for each option.
+    
+        # Get a choice for each individual:
+        # sample(matrix(rep(c(0, 1), each = nind), ncol = 2), size = nind, replace = TRUE, prob = p)
+    
+        cvec <- apply(p, MARGIN = 1, FUN = function(p){
+          sample(c(0, 1), size = 1, prob = p)
+        })
+    
+        cmat <- rbind(cmat, cvec)
+    
+        # Rewards:
+        # Rewards (rows are rounds, columns individuals):
+        rew_choice <- sample(c(0, 1), size = 1, prob = op_prob)
+        rmat <- ifelse(rew_choice == cvec & any(rew_choice == cvec),  # if any chose the rewarded option for all.
+                       competition * maxrew/sum(rew_choice == cvec) +
+                         (1 - competition) * maxrew/2,  
+                          # maximum reward distributed (divide by 2 for non-competition).
+                       0)
+    
+    
+        utmat[, rew_choice + 1, tr] <- rmat  # add rewarded option.
+        # TODO: Translate utuitlity if necessary.
+    
+      }  # eof. loop.
+    
+      return(list(cmat = cmat, optval = optval_mat))
+    
+    }
+```
+
+```{r run-sims}
+theta_cur <- 0.1
+
+outlist <- lapply(c(0.2, 0.5, 0.9), FUN = function(p){
+  simout <- simfun(theta = c(0.9, theta_cur), nind = 1, op_prob = c(p, 1-p))
+
+  soft <- 3^(10 * theta_cur) - 1  
+
+  optval_mat_tr <- t(apply(simout$optval[1,,], MAR = 2, function(x) x - max(x)))
+  oprobs <- exp(optval_mat_tr * soft)
+  data.frame(tr = 1:length(simout$cmat), p = p, oval = simout$optval[,2,], oprob = (oprobs/rowSums(oprobs))[,2], 
+        choice = simout$cmat)
+})
+
+
+do.call(rbind, outlist) %>%
+  ggplot(aes(x = tr, y = oprob, color = factor(p))) +
+  facet_grid(. ~ p) +
+  geom_line(linewidth = 1, alpha = 0.7) +
+  geom_point(aes(y = choice), position = position_jitter(height = 0.01)) +
+  scale_color_brewer(palette = "Dark2") +
+  theme_bw()
+```
+
+
 # Session 2
 
 ## [TODO] Illustrate Grid search 
