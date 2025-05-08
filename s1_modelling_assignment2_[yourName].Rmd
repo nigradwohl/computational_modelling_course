@@ -144,7 +144,7 @@ You can then pass the choice probability to the `rbinom()` or `sample()` functio
 Visualize the function(s) in the model you use to describe the choice data (for different parameters, values and probabilites).
 
 ```{r visualize-functions}
-
+# Your solution here
 ```
 
 
@@ -166,17 +166,17 @@ ngpair <- 25  # Number of gamble pairs to produce from each type.
 probs <- round(runif(ngpair * 12 * 2, 0, 1), 2)  # Sample probabilities from a uniform distribution.
 outcomes_pos <- round(runif(ngpair * 4, 0, 100))  # positive outcomes.
 outcomes_neg <- round(runif(ngpair * 4, -100, -1))  # negative outcomes.
-outcomes_mix <- round(c(runif(ngpair * 4, -100, 0), runif(ngamble * 2, 0, 100)))  # mixed outcomes.
+outcomes_mix <- round(cbind(runif(ngpair * 2, -100, 0), runif(ngpair * 2, 0, 100)))  # mixed outcomes.
 
 # Create gamble pairs to simulate choices:
 gpairs <- data.frame(pA = matrix(probs[1:(ngpair * 6)], ncol = 2),
                      oA = rbind(matrix(outcomes_pos[1:(ngpair * 2)], ncol = 2),
                                matrix(outcomes_neg[1:(ngpair * 2)], ncol = 2),
-                               matrix(outcomes_mix[1:(ngpair * 2)], ncol = 2)),
+                               matrix(outcomes_mix[1:(ngpair),], ncol = 2)),
                      pB = matrix(probs[(ngpair*6+1):length(probs)], ncol = 2),
                      oB = rbind(matrix(outcomes_pos[(ngpair*2+1):length(outcomes_pos)], ncol = 2),
                                matrix(outcomes_neg[(ngpair*2+1):length(outcomes_pos)], ncol = 2),
-                               matrix(outcomes_mix[(ngpair*2+1):length(outcomes_pos)], ncol = 2)),
+                               matrix(outcomes_mix[(ngpair+1):nrow(outcomes_mix),], ncol = 2)),
                      type = rep(c("gain", "loss", "mix"), each = ngpair)  # add the gamble type for filtering.
                      )
  
@@ -192,7 +192,17 @@ Set your own seed, run the generation of the gambles and understand the gamble e
 
 1. Visualize the value (and probability) judgments and choice probabilities for each gamble for different parameter combinations (at least 2 values for each parameter).
 
+```{r visualize-gambles}
+# Your solution here
+```
+
+
 1. Obtain corresponding choice data from about one hundred individuals with different parameters.
+
+```{r simulate-choice-data}
+# Your solution here
+```
+
 
 
 You may simplify the task by taking only a subset of the gambles (e.g., gain, loss, mix) or assume that gamble A or B is a safe value of 0.
