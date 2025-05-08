@@ -289,7 +289,8 @@ value_function <- function(x, alp, bet = alp, lamb){
 
 # Get data for each combination:
   outlist <- apply(dm, MARGIN = 1, FUN = function(rw){
-    data.frame(x = x, V = value_function(x, alp = rw[1], lamb = rw[2]), alp = rw[1], lamb = rw[2]) 
+    data.frame(x = x, V = value_function(x, alp = rw[1],
+      lamb = rw[2]), alp = rw[1], lamb = rw[2]) 
   })
 
   outdat <- do.call(rbind, outlist)  # combine the list into a single data.frame.
@@ -477,10 +478,11 @@ update_q <- function(qprev,  # vector of previous q values
 theta_cur <- 0.1
 
 dm <- expand.grid(theta_cur = c(0.2, 0.8),
-                  p = c(0.2, 0.5, 0.9))
+                  p = c(0.2, 0.5, 0.9),
+                  alp = 0.9)
 
 outlist <- lapply(1:nrow(dm), FUN = function(rw){
-  simout <- simfun(theta = c(0.9, dm$theta_cur[rw]), nind = 1, op_prob = c(dm$p[rw], 1-dm$p[rw]))
+  simout <- simfun(theta = c(dm$alp[rw], dm$theta_cur[rw]), nind = 1, op_prob = c(dm$p[rw], 1-dm$p[rw]))
 
   soft <- 3^(10 * dm$theta_cur[rw]) - 1  
 
@@ -505,9 +507,41 @@ ggsave("_figures/rl_example.png", height = 16, width = 24, unit = "cm")
 ```
 
 
+## Illustrate Grid search 
+
+```{r}
+# Choices for first parameters.
+cur_choices <- outlist[[1]]$choice
+
+mean(outlist[[1]]$choice)
+
+# Fixed choice probability:
+
+ps <- seq(0, 1, by = 0.1)
+
+lls <- sapply(ps, FUN = function(p){
+  ll <- dbinom(cur_choices, size = 1, p, log = TRUE)
+})
+
+deviance <- -2 * colSums(lls)
+min(deviance)
+
+ps[which.min(deviance)]
+```
+
+
+```{r grid-search}
+dm <- expand.grid(alp = seq(0, 1, by = 0.1),
+                  theta = seq(0, 1, by = 0.1))
+
+# Choices for first parameters.
+outlist[[1]]$choice
+```
+
+
 # Session 2
 
-## [TODO] Illustrate Grid search 
+
 
 
 ## [TODO] Illustrate Nelder-mead -- Simplex 

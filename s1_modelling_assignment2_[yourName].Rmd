@@ -1,5 +1,5 @@
 ---
-title: 'Computational modelling of judgments, decisions and cognition -- Assignments 2: Getting started'
+title: 'Computational modelling of judgments, decisions and cognition -- Assignment 2: Visualizing and simulating gamble choices'
 author: "[YOUR NAME]"
 date: "`r Sys.Date()`"
 output: html_document
@@ -14,6 +14,7 @@ library(ggplot2)  # important package for plotting.
 ```
 
 
+
 # General rules for handing in assignments 
 
 
@@ -24,6 +25,8 @@ library(ggplot2)  # important package for plotting.
 1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
 
 1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
+
+1. Comment your code so that another person (at least me) can understand what you did.
 
 
 
@@ -159,7 +162,7 @@ Each gamble $j$ consists of a probability $p_j$ and an outcome $o_j$ (for sake o
 
  
 ```{r generate-gambles}
-set.seed(9999)  # deterime the seed of the random generator [SET YOUR OWN!].
+set.seed(9999)  # determine the seed of the random generator [SET YOUR OWN!].
 
 ngpair <- 25  # Number of gamble pairs to produce from each type.
 
@@ -206,10 +209,4 @@ Set your own seed, run the generation of the gambles and understand the gamble e
 
 
 You may simplify the task by taking only a subset of the gambles (e.g., gain, loss, mix) or assume that gamble A or B is a safe value of 0.
-
-
-# Task 4: Learn about Bayesian Statistics
-
-Watch the first 9 videos of the following youtube playlist (it is okay, if you don't watch all until next session):
-https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
 
