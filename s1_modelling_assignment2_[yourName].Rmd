@@ -193,7 +193,8 @@ Set your own seed, run the generation of the gambles and understand the gamble e
 
 # Task 3: Simulating Data
 
-1. Visualize the value (and probability) judgments and choice probabilities for each gamble for different parameter combinations (at least 2 values for each parameter).
+1. Visualize the value (and probability) judgments and choice probabilities for each gamble for different parameter combinations (at least 2 values for each parameter crossed with each other, for a minimum of 4 combinations).
+Additionally, condiser ordering the gambles in some useful fashin (hint: use the expected value).
 
 ```{r visualize-gambles}
 # Your solution here

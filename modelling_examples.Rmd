@@ -521,7 +521,7 @@ intercept <- .0
 # generate synthetic data
 dat <- matrix(0, nDataPts, 2)
 dat[ ,2] <- rnorm(nDataPts)   
-dat[ ,1] <- rnorm(nDataPts)*sqrt(1.0-rho^2) + data[ ,2]*rho + intercept  
+dat[ ,1] <- rnorm(nDataPts)*sqrt(1.0-rho^2) + dat[ ,2]*rho + intercept  
 
 dat
 

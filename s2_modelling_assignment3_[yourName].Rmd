@@ -27,74 +27,66 @@ library(ggplot2)  # important package for plotting.
 
 
 
-## Probability learning data 
 
-In each round one of two options is rewarded with a unit reward (i.e., one point) the other is unrewarded.
-Individuals want to maximize their rewards.
 
-```{r generate-pdat}
-probdat <- seq(0.05, 0.95, by = 0.15)  # probabilities.
 
-# FUnction to generate rewards:
-curprob <- probdat[1]  # selecting a probability.
+# Task 1: Getting data from the previous assignment
 
-tr <- 200  # 200 rounds.
-rbinom(tr, 1, curprob)  # get an outcome according to a bernoulli distribution.
+Take the model you used in the previous assignment and 
+
+1. repeat the visualizations of the function(s) involved (i.e., the relationships between values and probabilities to the values used), 
+2. visualize the data and the choices you simulated for each of the gambles (the head of a table is sufficient).
+
+You may use a subset of the parameters and gambles you simulated data for.
+Use at least two parameter combinations.
+
+Use this opportunity also to fix any errors (especially those in my feedback). 
+
+*You may revert to a simpler model (i.e., from prospect theory to expected utility).*
+
+
+
+# Task 2: Parameter estimation
+
+Use your simulated choice data to estimate the parameters of your models by means of maximum likelihood estimation.
+
+Hint: You get a predicted choice probability based on a combination of parameters as model output (through your softmax rule).
+You can use this probability to get the likelihood of a given choice through a bernoulli distribution `dbinom(data, prob)` -- how likely is it to observe the choice, given the probability output by the model. 
+You then try to find those paramter combination that minimizes the negative *log* likelihood (or rather twice the log likelihood).
+
+```{r obtaining-minimzing-likelihood}
+# Obtaining and minimizng likellihood:
+p <- 0.4  # probability (model prediction).
+
+vchoice <- c(0, 1, 0, 0, 0, 1)  # vector of choices.
+
+# Likelihood of choice 1:
+  (lik <- dbinom(vchoice[1], 1, p))  # show likelihood of one choice.
+
+# Likelihood of all choices:
+  (lik <- dbinom(vchoice, 1, p)) 
+
+# To maximize, we use the log-likelihood,
+  # which you can obtain like this:
+    (ll <- dbinom(vchoice, 1, p, log = TRUE))
+  # or this:  
+    (ll <- log(dbinom(vchoice, 1, p)))
+  # Since minimzation is easier, we minimize 2 timese the negative likelihood (also called deviance):
+
+    (dev <- -2 * sum(ll))  # this is your discrepancy function.
+      # Note: Summing up the log likelihoods is equal to multiplying the likelihoods; the latter may result in underflow.
+  
 ```
 
-### Model suggestions 
+
+*In case minimizing the deviance does not work, you may use the choice probabilities directly (and also a RMSD).*
 
 
-#### Probability matching 
-
-Individuals select the options relative to their probability of being rewarded. 
-
-
-
-#### Simple reinforcement learning ($Q$-learning)
-
-Individuals *learn* about the best option. In each round $t$ they update a representation $Q$ of each option (also called "action").
-
-\[
-Q(t+1) = Q(t) + \alpha (r_t - Q_t)
-\]
-
-This means that the expectation at time $t+1$ is the previous expectation plus the weighted "surprise" about the outcome (reflected in the deviation of the outcome from the expectation).
-The impact of this is governed by the learning rate $\alpha \in [0;1]$.
-
-
-#### Simulating choices 
-
-If you want to simulate choices from $Q$-values for options A and B, you can use a softmax rule: 
-
-\[p_t(A) = \frac{e^{\phi Q_t(A)}}{e^{\phi Q_t(A)} + e^{\phi Q_t(B)}}\]
-
-with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being related to more random responding (inverse temperature parameter). 
+## Use a grid search 
 
 
 
-
-
-### [YOUR ASSIGNMENT HERE]
-
-Simulate choices from the model for different probabilities from `probdat`.
-
-
-# [TODO] Task 1: Simulate your data  
-
-1. Simulate data from a probability learning environment 
-
-1. Pick a model, e.g., simple reinforcement learning 
-
-1. Visualize the function(s) you use 
-
-1. Simulate data from a few hundred individuals with different parameters (if)
-
-
-
-# [TODO] Task 2: Grid search 
-
-
+## Use the Nelder-Mead Simpex algorithm
 
 
 # Task 3: Learn about Bayesian Statistics
