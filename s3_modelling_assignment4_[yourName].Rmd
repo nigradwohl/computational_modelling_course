@@ -82,19 +82,22 @@ Simulate choices from the model for different probabilities from `probdat`.
 
 # [TODO] Task 1: Simulate your data  
 
-1. Simulate data from a probability learning environment 
+1. Simulate data from a probability learning environment for at least 100 rounds; assume that the rewarded option provides a unit reward of 1 
 
-1. Pick a model, e.g., simple reinforcement learning 
+1. Simulate choices from a simple reinforcement learning model; vary each parameter so that you get at least 2x2 combinations; for each parameter combination simulate 100 choices for at least 10 individuals 
 
-1. Visualize the function(s) you use 
-
-1. Simulate data from a few hundred individuals with different parameters (if)
+1. Visualize the choice data over time for at least 3 individuals 
 
 
 
-# [TODO] Task 2: Grid search 
 
+# [TODO] Task 2: Parameter recovery
 
+1. Use your choice data to recover the parameters $\alpha$ and $\phi$
+
+* Use the Nelder-Mead algorithm 
+
+* [BAYESIAN? stan?]
 
 
 # Task 3: Learn about Bayesian Statistics
