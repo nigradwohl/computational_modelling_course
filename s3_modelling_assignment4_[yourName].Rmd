@@ -112,7 +112,7 @@ According to WSLS, individuals switch, when they receive no reward and select th
 
 * What is the problem with such a model?
 
-* Determine the fit of the WSLS model to your simulated choice data. What do you need to do?
+* Determine the fit of the WSLS model to your simulated choice data. What do you need to do (hint: you need some probability)?
 
 * Compare the fit of the WSLS model to your learning model. What do you observe?
 
