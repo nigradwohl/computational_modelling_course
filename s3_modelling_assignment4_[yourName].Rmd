@@ -75,32 +75,51 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 
 
-### [YOUR ASSIGNMENT HERE]
+# Task 1: Simulate your data  
 
-Simulate choices from the model for different probabilities from `probdat`.
+1. Simulate data from a probability learning environment for at least 100 rounds; 
 
+1. Simulate choices from a simple reinforcement learning model in a probability learning environment; assume that the rewarded option provides a unit reward of 1 
 
-# [TODO] Task 1: Simulate your data  
-
-1. Simulate data from a probability learning environment for at least 100 rounds; assume that the rewarded option provides a unit reward of 1 
-
-1. Simulate choices from a simple reinforcement learning model; vary each parameter so that you get at least 2x2 combinations; for each parameter combination simulate 100 choices for at least 10 individuals 
+* vary each parameter so that you get at least 2x2 combinations; for each parameter combination simulate 100 choices for at least 10 individuals 
 
 1. Visualize the choice data over time for at least 3 individuals 
 
 
 
 
-# [TODO] Task 2: Parameter recovery
+# Task 2: Parameter recovery
 
-1. Use your choice data to recover the parameters $\alpha$ and $\phi$
+* Use your simulated choice data to recover the parameters $\alpha$ and $\phi$ you used
 
-* Use the Nelder-Mead algorithm 
-
-* [BAYESIAN? stan?]
+* Use a grid serach or the Nelder-Mead algorithm 
 
 
-# Task 3: Learn about Bayesian Statistics
+
+# Task 3: Model comparison 
+
+* Determine how well a model according to which individuals select each option with a fixed probability describes your data.
+
+* Determine the best fitting probability and fit for each individual.
+
+* Compare the fit of this simple model to the fit of your learning model. What do you observe?
+
+
+# [Optional] Task 4: Win-stay, lose shift
+
+Determine how well a simple win-stay, lose-shift (WSLS) model describes your data.
+According to WSLS, individuals switch, when they receive no reward and select the same option when they were rewarded.
+
+* What is the problem with such a model?
+
+* Determine the fit of the WSLS model to your simulated choice data. What do you need to do?
+
+* Compare the fit of the WSLS model to your learning model. What do you observe?
+
+*WSLS does not need a free parameter. However, you may estimate up to two probabilities: one after "win" (being rewarded) and one after "lose" (not being rewarded.*
+
+
+# Task 5: Learn about Bayesian Statistics
 
 Watch the first 9 videos of the following playlist (it is okay, if you don't watch all unti next session):
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
