@@ -92,11 +92,18 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 * Use your simulated choice data to recover the parameters $\alpha$ and $\phi$ you used
 
-* Use a grid serach or the Nelder-Mead algorithm 
+* Use a grid search or the Nelder-Mead algorithm 
 
 
 
-# Task 3: Model comparison 
+# Task 3: Parameter uncertainty 
+
+* For each of the two parameters in the previous model estimate the variability (for instance with bootstrapping).
+
+
+
+
+# Task 4: Model comparison 
 
 * Determine how well a model according to which individuals select each option with a fixed probability describes your data.
 
@@ -105,7 +112,7 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 * Compare the fit of this simple model to the fit of your learning model. What do you observe?
 
 
-# [Optional] Task 4: Win-stay, lose shift
+# [Optional] Task 5: Win-stay, lose shift
 
 Determine how well a simple win-stay, lose-shift (WSLS) model describes your data.
 According to WSLS, individuals switch, when they receive no reward and select the same option when they were rewarded.
@@ -119,8 +126,8 @@ According to WSLS, individuals switch, when they receive no reward and select th
 *WSLS does not need a free parameter. However, you may estimate up to two probabilities: one after "win" (being rewarded) and one after "lose" (not being rewarded.*
 
 
-# Task 5: Learn about Bayesian Statistics
+# Task 6: Learn about Bayesian Statistics
 
-Watch the first 9 videos of the following playlist (it is okay, if you don't watch all unti next session):
+Make sure to have watched until video 17 of the following playlist:
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
 
