@@ -626,8 +626,274 @@ outlist[[1]]$choice
 ```
 
 
-# Session 2
+### Parameter variability 
+
+Check parameter variability with bootstrapping.Uses Carpenter et al. (2008).
+
+Experiment: 
+
+* Participants studied 60 obscure facts (e.g., "greyhounds have the best eyesight of any dog"). 
+
+* testing after 5 minutes, 1, 2, 7, 14, 42 days 
+
+* Characterized by a power function
+
+\[
+p = a(b t + 1)^{-c}
+\]
+
+```{r}
+#discrepancy for power forgetting function 
+powdiscrep <- function (parms,rec,ri) {                    
+  if (any(parms<0)||any(parms>1)) return(1e6)
+  pow_pred <- parms["a"] *(parms["b"]*ri + 1)^(-parms["c"])
+  return(sqrt( sum((pow_pred-rec)^2)/length(ri) ))
+}                                                          
+
+#Carpenter et al. (2008) Experiment 1
+rec <- c(.93,.88,.86,.66,.47,.34) # recall proportions.
+ri  <- c(.0035, 1, 2, 7, 14, 42)  # retention intervals in days.
+
+# initialize starting values 
+  sparms <-c(1,.05,.7)
+  names(sparms) <- c("a","b","c")
+#obtain best-fitting estimates
+  pout <- optim(sparms, powdiscrep, rec=rec, ri=ri)   # Simplex
+  pow_pred <- pout$par["a"] *(pout$par["b"]*c(0:max(ri)) + 1)^(-pout$par["c"])  
+
+#plot data and best-fitting predictions
+  x11()
+  par(cex.axis=1.2,cex.lab=1.4)
+  par(mar=(c(5, 5, 3, 2) + 0.1),las=1)
+  plot(ri,rec, 
+       xlab = "Retention Interval (Days)", 
+       ylab = "Proportion Items Retained",  
+       ylim=c(0.3,1),xlim=c(0,43),xaxt="n",type="n")
+  lines(c(0:max(ri)),pow_pred,lwd=2)
+  points(ri,rec,pch=21, bg="dark grey",cex=2)
+  dev <- pow_pred[ri+1]
+  for (x in c(1:length(ri))) {
+    lines(c(ri[x],ri[x]),c(dev[x],rec[x]),lwd=1)
+    }
+  axis(1,at=c(0:43))
+```
 
 
+```{r bootstrap}
+# perform bootstrapping analysis
+ns  <- 55
+nbs <- 1000
+bsparms <- matrix(NA,nbs,length(sparms))
 
-## [TODO] Simulations 
+# Predictions:
+bspow_pred <- pout$par["a"] *(pout$par["b"]*ri + 1)^(-pout$par["c"])
+
+for (i in c(1:nbs)) {   
+    recsynth     <- vapply(bspow_pred, FUN=function(x) mean(rbinom(ns,1,x)), numeric(1))  # synthetic data.
+    bsparms[i,]  <- unlist(optim(pout$par,powdiscrep,rec=recsynth,ri=ri)$par)  # estimate values for a, b and c
+}
+
+#function to plot a histogram
+histoplot<-function(x,l4x) {
+    hist(x,xlab=l4x,main="",xlim=c(0,1),cex.lab=1.5,cex.axis=1.5)
+    lq <- quantile(x,0.025)
+    abline(v=lq,lty="dashed",lwd=2)
+    uq <- quantile(x,0.975)
+    abline(v=uq,lty="dashed",lwd=2)
+    return(c(lq,uq))
+}
+x11(width=5,height=2)
+par(mfcol=c(1,3),las=1)
+for (i in c(1:dim(bsparms)[2])) {
+    print(histoplot(bsparms[,i],names(sparms)[i]))
+}
+```
+
+
+## Model complexity 
+
+```{r}
+n <- 1000
+m <- seq(1,10,length.out = n)
+
+#pdf(file="polycomplex.pdf", width=7, height=4)
+
+par(mfrow=c(1,2))
+
+for (modOrder in c(2,10)){
+  plot(1:10,1:10,xlim=c(0.5,10.5), ylim=c(0,5), type="n",
+       xlab="Physical intensity", ylab="Sensation", las=1)
+  kk <- poly(x = m,degree = modOrder)
+  for (rep in 1:10){
+    tcoef <- rnorm(modOrder, sd=5)
+    #tcoef <- rexp(modOrder, rate=0.2)
+    y <- t(kk%*%tcoef)
+    y <- y - min(y)
+    lines(x=m, y, type="l", col=rgb(0,0,0,0.5))
+  }
+}
+
+#dev.off()
+```
+
+Out of set prediction error: 
+
+```{r}
+n <- 20
+n_transfer <- 2
+nReps <- 1000
+maxOrder <- 6
+
+trainErr <- rep(0, maxOrder)
+testErr <- rep(0, maxOrder)
+
+m <- 1:n
+
+tcoef <- c(1,-1,1)
+kk <- poly(m,length(tcoef))
+realf <- t(kk%*%tcoef)
+
+plot(m, realf)
+
+for (rep in 1:nReps){
+  #tcoef <- c(-1,-1,1)
+  dat <- realf + rnorm(n, sd=0.5)
+  m_t <- sample.int(n, size=n_transfer)
+  m <- setdiff(1:n,m_t)
+  for (modOrder in 1:maxOrder){
+    tTrain <- 0
+    tTest <- 0
+    lm_t <- lm(dat[m] ~ poly(m,modOrder))
+    tTrain <- tTrain + mean(lm_t$residuals^2)
+    tTest <- tTest + mean((predict(lm_t, data.frame(m=m_t))-dat[m_t])^2)
+    trainErr[modOrder] <- trainErr[modOrder] + tTrain
+    testErr[modOrder] <- testErr[modOrder] + tTest
+  }
+}
+
+kk <- cbind(trainErr,testErr)/nReps
+
+#pdf(file="outOfSet.pdf",width=4,height=5)
+matplot(kk, type="l",lty=1,
+        ylim=c(0,0.7),
+        lwd=2,col=c("black","grey"),
+        xlab="Complexity",ylab="Prediction Error")
+legend(1,0.7,c("Train","Test"),lwd=2,lty=1,col=c("black","grey"))
+#dev.off()
+```
+
+## Polynomial law of sensation 
+
+```{r}
+n <- 10
+stimrange <- c(1,10)
+m <- seq(stimrange[1],stimrange[2],length.out = n)
+s <- log(m) + rnorm(n,sd=0.5)
+s[s < 0] <- 0
+
+lm_3 <- lm(s ~ poly(m,3))
+lm_n <- lm(s ~ poly(m,n-1))
+
+#pdf(file="Nihm76.pdf", width=6, height=6)
+
+par(mfrow=c(1,2))
+# plot(m,s, pch=3, las=1,
+#      xlab='Physical Intensity',
+#      ylab='Perceived Intensity')
+# points(predict(lm_3))
+# 
+# plot(m,s, pch=3, las=1,
+#      xlab='Physical Intensity',
+#      ylab='Perceived Intensity')
+# points(predict(lm_n))
+
+m_fill <- seq(stimrange[1],stimrange[2],length.out = 1000)
+plot(m,s, pch=3, las=1,
+     xlab='Physical Intensity',
+     ylab='Perceived Intensity')
+lines(m_fill,
+      predict(lm_3,data.frame(m=m_fill)),
+      type="l", lty=1, las=1)
+
+plot(m,s, pch=3, las=1,
+     xlab='Physical Intensity',
+     ylab='Perceived Intensity')
+lines(m_fill,
+      predict(lm_n,data.frame(m=m_fill)),
+      type="l", lty=1, las=1)
+
+#dev.off()
+```
+
+
+## Bias-variance 
+
+```{r}
+n <- 20
+n_transfer <- 10
+nReps <- 500
+maxOrder <- 10
+realOrder <- 3
+
+m <- 1:n
+
+bias <- rep(0, maxOrder)
+variab <- rep(0,maxOrder)
+
+tcoef <- c(1,-1,1)
+kk <- poly(m,length(tcoef))
+realf <- kk%*%tcoef
+
+allPreds <- {}
+for (modOrder in 1:maxOrder){
+  allPreds[[modOrder]] <- matrix(rep(0,n*nReps),ncol=n)
+}
+
+for (rep in 1:nReps){
+  #tcoef <- c(-1,-1,1)
+  dat <- realf + rnorm(n, sd=0.5)
+  for (modOrder in 1:maxOrder){
+    lm_t <- lm(dat ~ poly(m,modOrder))
+    allPreds[[modOrder]][rep,] <- predict(lm_t)
+  }
+}
+
+#pdf(file="biasVarianceIllus.pdf",width=7,height=7)
+par(mfrow=c(2,2))
+for (ii in c(1,3,7,10)){
+  plot(m,realf,ylim=c(-1.5,1),
+       type="b",lwd=2,las=1,
+       xlab="x", ylab="y")
+  lines(colMeans(allPreds[[ii]]),
+        col=rgb(0,0,0,0.5),lwd=3)
+  kk <- apply(allPreds[[ii]],2,function(x) quantile(x,c(0.1,0.9)))
+  lines(smooth(kk[1,]), lwd=2,lty=2,col=rgb(0,0,0,0.5))
+  lines(smooth(kk[2,]), lwd=2,lty=2,col=rgb(0,0,0,0.5))
+  legend(10,-0.5,legend=c("true","fitted"), lty=1, 
+         col=c("black","grey"),lwd=2)
+  title(paste("Order = ",ii))
+}
+#dev.off()
+
+bias <- rep(0,maxOrder)
+variab <- rep(0,maxOrder)
+for (ii in 1:maxOrder){
+  mm <- colMeans(allPreds[[ii]])
+  bias[ii] <- mean((mm-realf)^2)
+  kk <- apply(allPreds[[ii]],1,function(x) (x-mm)^2)
+  variab[ii] <- mean(rowMeans(kk))
+}
+
+#pdf(file="biasVarTradeOff.pdf",width=5,height=5)
+par(mfrow=c(1,1))
+plot(bias+variab, type="l", lwd=2, lty=2,
+     ylim=c(0,0.15), 
+     xlab="Complexity", ylab="Error")
+lines(bias,lwd=2)
+lines(variab,lwd=2,col=rgb(0,0,0,0.5))
+legend(6,0.07,
+       legend=c("Total Error",expression("Bias" ^ "2"),"Variance"),
+       lty=c(2,1,1),lwd=1,col=c("black","black","grey"))
+#dev.off()
+```
+
