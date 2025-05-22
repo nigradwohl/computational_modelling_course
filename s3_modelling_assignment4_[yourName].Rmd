@@ -1,5 +1,5 @@
 ---
-title: 'Computational modelling of judgments, decisions and cognition -- Assignments 2: Getting started'
+title: 'Computational modelling of judgments, decisions and cognition -- Assignments 4: Simulation, Estimation and Paramter Uncertainty'
 author: "[YOUR NAME]"
 date: "`r Sys.Date()`"
 output: html_document
@@ -25,7 +25,6 @@ library(ggplot2)  # important package for plotting.
 
 1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
 
-**This assignment will be graded**
 
 ## Probability learning data 
 
@@ -33,21 +32,20 @@ In each round one of two options is rewarded with a unit reward (i.e., one point
 Individuals want to maximize their rewards.
 
 ```{r generate-pdat}
-probdat <- seq(0.05, 0.95, by = 0.15)  # probabilities.
-
-# FUnction to generate rewards:
-curprob <- probdat[1]  # selecting a probability.
+# Function to generate rewards:
+curprob <- 0.05  # selecting a probability.
 
 tr <- 200  # 200 rounds.
 rbinom(tr, 1, curprob)  # get an outcome according to a bernoulli distribution.
 ```
 
+
 ### Model: Individual Reinforcement Learning 
 
-Individuals *learn* about the best option. In each round $t$ they update a representation $Q$ of each option (also called "action").
+Individuals *learn* about the best option $i$. In each round $t$ they update a representation $Q$ of each option (also called "action").
 
 \[
-Q(t+1) = Q(t) + \alpha (r_t - Q_t)
+Q_{t+1}(i) = Q_t(i) + \alpha [r_t - Q_t(i)]
 \]
 
 This means that the expectation at time $t+1$ is the previous expectation plus the weighted "surprise" about the outcome (reflected in the deviation of the outcome from the expectation).
@@ -68,15 +66,15 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 # Task 1: Simulate your data  
 
-* simulate 100 choices for at least 10 individuals with different parameter combinations in a probability learning environment
+* simulate 100 choices for at least 10 individuals with different parameter combinations in a probability learning environment, where on each trial one option is rewarded with a probability $p$ and the other with a probability $p-1$ (choose a reward probability for the options, wit $p \notin {0;0.5,1}$)
 
-* To this end, use a simple reinforcement learning model
+* Simulate these choices from a simple reinforcement learning model
 
-* For each individual simulate its own rewards from a probability learning environment -- take care of temporal dependencies (a non choices option cannot be rewarded); assume that the rewarded option provides a unit reward of 1 
+    + For each individual simulate its own rewards from a probability learning environment -- take care of temporal dependencies (a non-chosen option cannot be rewarded); assume that the rewarded option provides a unit reward of 1 
 
-* vary each parameter so that you get at least 2x2 combinations; for each parameter combination  
-
-* Visualize the simulated choice data over time for at least 3 individuals (and note down their parameters) 
+    + vary each parameter so that you get at least 2x2 combinations; for each parameter combination  
+    
+* visualize the simulated choice data over time for at least 3 individuals with at least two different paramter combinations (and note down their respective parameters) 
 
 
 
@@ -85,7 +83,7 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 * Use model fitting on your simulated choice data to recover the parameters $\alpha$ and $\phi$ you used *for each individual* 
 
-* Use a grid search or the Nelder-Mead algorithm with the maximum likelihood approach 
+* Use the maximum likelihood approach and one algorithm *one*: a grid search or the Nelder-Mead algorithm 
 
 * Visualize the relationship between the best fitting parameters with the true parameters for each individual 
 
@@ -93,38 +91,15 @@ with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being re
 
 # Task 3: Parameter uncertainty 
 
-* For each of the two parameters $\alpha$ and $\phi$ in the previous model estimate the variability (for instance with bootstrapping).
+* For each of the two parameters $\alpha$ and $\phi$ in the previous model estimate the variability (for instance with bootstrapping) for at least 3 individuals.
 
-* Visualize the parameter variability for at least 3 individuals (e.g., as histograms) 
-
-
+* Visualize the parameter variability (e.g., as histograms or violin plots) 
 
 
-# Task 4: Model comparison 
-
-* Determine how well a model according to which individuals select each option with a fixed probability describes your data.
-
-* Determine the best fitting probability for each individual.
-
-* Compare the fit of this simple model to the fit of your learning model. What do you observe?
 
 
-# [Optional] Task 5: Win-stay, lose shift
+# Task 4: Learn about Bayesian Statistics
 
-Determine how well a simple win-stay, lose-shift (WSLS) model describes your data.
-According to WSLS, individuals switch, when they receive no reward and select the same option when they were rewarded.
-
-* What is the problem with such a model?
-
-* Determine the fit of the WSLS model to your simulated choice data. What do you need to do (hint: you need some probability)?
-
-* Compare the fit of the WSLS model to your learning model. What do you observe?
-
-*WSLS does not need a free parameter. However, you may estimate up to two probabilities: one after "win" (being rewarded) and one after "lose" (not being rewarded.*
-
-
-# Task 6: Learn about Bayesian Statistics
-
-Make sure to have watched until video 17 of the following playlist:
+Make sure to have watched until video 9 of the following playlist:
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
 
