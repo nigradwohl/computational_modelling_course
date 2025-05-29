@@ -62,14 +62,17 @@ If you want to simulate choices from $Q$-values for options A and B, you can use
 with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being related to more random responding (inverse temperature parameter). 
 
 
+# Task 0: Revise the previous assignment 
+
+* Make sure that **[add frequent problems here]**
 
 
 
 # Task 1: Model comparison 
 
-Take your simulated choice data from the last assignment 
+Take your simulated choice data for each individual "agent" from the last assignment 
 
-* Determine how well a model according to which individuals select each option with a fixed probability describes your data.
+* Determine how well a 1-parameter model according to which individuals select each option with a fixed probability describes your data.
 
 * Determine the best fitting probability for each individual.
 
@@ -85,12 +88,12 @@ According to WSLS, individuals switch, when they receive no reward and select th
 
 * Determine the fit of the WSLS model to your simulated choice data. What do you need to do (hint: you need some probability)?
 
-* Compare the fit of the WSLS model to your learning model. What do you observe?
+* Compare the fit of the WSLS model to the fixed probability model from task 1 and your learning model. What do you observe?
 
 *WSLS does not need a free parameter. However, you may estimate up to two probabilities: one after "win" (being rewarded) and one after "lose" (not being rewarded.*
 
 
-# Task 6: Learn about Bayesian Statistics
+# Task 3: Learn about Bayesian Statistics
 
 Make sure to have watched until video 17 of the following playlist:
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
