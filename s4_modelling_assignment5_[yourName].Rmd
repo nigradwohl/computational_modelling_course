@@ -25,6 +25,7 @@ library(ggplot2)  # important package for plotting.
 
 1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
 
+**This assignment will be graded** 
 
 ## Probability learning data 
 
@@ -62,10 +63,41 @@ If you want to simulate choices from $Q$-values for options A and B, you can use
 with $\phi$ indicating how noisy the responding is, with smaller $\phi$ being related to more random responding (inverse temperature parameter). 
 
 
+# Task 1: Revisit the previous assignment 
+
+1. Recover the parameters, thereby try to: 
+    + use an algorithm like Nelder-mead simplex 
+    + calculate the $-2LL$ (deviance) based on a vector of choice probabilities (hint: you can create a vector of choices for each round; you can then use this vector to index the choice probabilities)
+    + what do the parameters mean? 
+    
+```{r example-mat}
+set.seed(94385)
+choices <- rbinom(5, 1, 0.7) 
+
+p0 <- round(rbeta(5, 9, 9), 2)  # random probabilities for option 0 (probability in column 1). 
+pmat <- cbind(p0, 1-p0)  # matrix of choice probaiblities. 
+
+# Obtain the choice probabilities of the chosen option for each trial:
+p_chosen <- pmat[cbind(1:length(choices), choices+1)]  # use the choice matrix as index for the probability matrix (note: in R indexing starts at 1).
+
+# Here, you can also substract the maximum probability in each row, to avpoid overflow.
+
+# To obtain the likelihood of these choices:
+-sum(log(p_chosen))
+```
+
+2. Redo the bootstrapping (for 3 individuals; ideally with different parameter combinations): This time make sure to 
+    a. simulate from the best fitting parameters for the individual (reward information may remain the same) 
+    b. refit the model 
+    c. obtain the bootstrap estimates
+    
+Hint: Start with one individual and scale up; also start with few iterations and eventually scale up to about 1,000 
+
+Also make sure to include the best-fitting and true parameter estimates in any plots of the bootstrap estiamtes.
 
 
 
-# Task 1: Model comparison 
+# Task 2: Model comparison 
 
 Take your simulated choice data from the last assignment 
 
@@ -76,7 +108,7 @@ Take your simulated choice data from the last assignment
 * Compare the fit of this simple model to the fit of your learning model from the last assignment. What do you observe?
 
 
-# Task 2: Win-stay, lose shift
+# Task 3: Win-stay, lose shift (ungraded)
 
 Determine how well a simple win-stay, lose-shift (WSLS) model describes your data.
 According to WSLS, individuals switch, when they receive no reward and select the same option when they were rewarded.
@@ -90,7 +122,7 @@ According to WSLS, individuals switch, when they receive no reward and select th
 *WSLS does not need a free parameter. However, you may estimate up to two probabilities: one after "win" (being rewarded) and one after "lose" (not being rewarded.*
 
 
-# Task 6: Learn about Bayesian Statistics
+# Task 4: Learn about Bayesian Statistics
 
 Make sure to have watched until video 17 of the following playlist:
 https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
