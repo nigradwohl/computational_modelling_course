@@ -1,0 +1,50 @@
+---
+title: "Computational modelling of judgments, decisions and cognition -- Assignments 5: Bootstrapping and Model Comparison"
+author: '[YOUR NAME]'
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+```
+
+
+# General rules for handing in assignments 
+
+
+1. You have to hand in all assignments except for one ungraded assignment.
+
+1. Upload your assignments to ilias until Wednesday 3 pm. 
+
+1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
+
+1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
+
+
+
+# Task 1: Learn about Bayesian Statistics
+
+Make sure to have watched until video 17 of the following playlist:
+https://youtube.com/playlist?list=PLFDbGp5YzjqXQ4oE4w9GVWdiokWB9gEpm&si=emFyWAjPCWcwEFs6
+
+You can also reference the first 3 chapters in "Statistical Rethinking" (https://www.google.com/url?sa=t&source=web&rct=j&opi=89978449&url=https://xcelab.net/rmpubs/sr2/statisticalrethinking2_chapters1and2.pdf&ved=2ahUKEwjfiZOe3dmNAxWsgP0HHewkIQgQFnoECB4QAQ&usg=AOvVaw2mQKQzcbAdMZiY6lOY0QSR)
+
+
+# Task 2: Illustrate the idea of Bayesian statistics 
+
+Illustrate the main idea of Bayesian statistics in a plot, using a discrete and a continuous distribtuion of your choice.
+
+
+# Task 3: Bayesian Paramter Estimation 
+
+How could we use the idea of Bayesian statistics to estimate the paramters of a model? 
+Illustrate the estimation for a simple model and some fictitious data (like from the first assignment).
+
+What are advantages of this approach?
