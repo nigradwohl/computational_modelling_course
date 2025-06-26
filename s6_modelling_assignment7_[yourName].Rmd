@@ -34,5 +34,9 @@ library(ggplot2)  # important package for plotting.
 
 # Task 1: Estimate paramters with MCMC sampling 
 
+* Take simulated data from your previous assignment
 
+* Estimate model parameters with MCMC sampling 
+
+* Illustrate the posterior distributions of the parameters 
 
