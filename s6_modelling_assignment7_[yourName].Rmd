@@ -34,9 +34,16 @@ library(ggplot2)  # important package for plotting.
 
 # Task 1: Estimate paramters with MCMC sampling 
 
-* Take simulated data from your previous assignment
+* Take simulated data from a linear model one of the first assignments
+    + Show the data
 
-* Estimate model parameters with MCMC sampling 
+* Estimate the parameters of a simple linear model with MCMC sampling 
 
-* Illustrate the posterior distributions of the parameters 
+* Check the results with a simple linear model using `lm()` and try to fit the model with the `brm()` function in the `brms` package 
 
+* Illustrate the posterior distributions of the parameters. Describe what they tell you.
+
+
+# Task 2 (optional): Estimate paramters with HMC sampling  
+
+Repeat the estimation by using HMC sampling.
