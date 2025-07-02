@@ -897,3 +897,79 @@ legend(6,0.07,
 #dev.off()
 ```
 
+
+## Bayesian updating 
+
+### Urn model 
+
+```{r betas}
+x <- seq(0, 1, by = 0.01)
+
+bet1_2 <- data.frame(x = x, dens = dbeta(x, 16, 12)) %>%
+  ggplot(aes(x = x, y = dens)) +
+  geom_line(aes(color = "B(1, 2)"), linewidth = 1) +
+  scale_color_brewer(palette = "Dark2" ) +
+  theme_classic()
+
+bet1_2
+
+ggsave("_figures/beta1_2.png", height = 12, width = 12, unit = "cm")
+
+```
+
+### Metropolis 
+
+```{r}
+num_weeks <- 1e5
+positions <- rep(0,num_weeks)
+current <- 10
+for ( i in 1:num_weeks ) {
+# record current position
+positions[i] <- current
+# flip coin to generate proposal
+proposal <- current + sample( c(-1,1) , size=1 )
+# now make sure he loops around the archipelago
+if ( proposal < 1 ) proposal <- 10
+if ( proposal > 10 ) proposal <- 1
+# move?
+prob_move <- proposal/current
+current <- ifelse( runif(1) < prob_move , proposal , current )
+}
+
+barplot(table(positions))
+```
+
+```{r}
+# Example for assignment:
+x <- rnorm(100, 3, 4)
+y <- 0 + rnorm(100, x, 4) * 0.3
+
+
+plot(x, y)
+
+iter <- 1e5
+positions <- rep(0, iter)  # parameter estimates.
+current <- 0
+
+for ( i in 1:num_weeks ) {
+  # record current position
+  positions[i] <- current
+  # flip coin to generate proposal
+  proposal <- current + rnorm(1, 0, 1)  # proiposal for parameter.
+
+  # Likelihood (no prior for now): 
+    
+
+
+  # now make sure he loops around the archipelago
+  if ( proposal < 1 ) proposal <- 10
+  if ( proposal > 10 ) proposal <- 1
+  # move?
+  prob_move <- proposal/current
+  current <- ifelse( runif(1) < prob_move , proposal , current )
+}
+
+barplot(table(positions))
+```
+
+
