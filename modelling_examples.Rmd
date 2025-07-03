@@ -905,11 +905,13 @@ legend(6,0.07,
 ```{r}
 # Parameters for prior
 mu_0 <- 0       # prior mean
-sigma_0 <- 1    # prior standard deviation
+sigma_0 <- 0.3    # prior standard deviation
 
 # Parameters for data (likelihood)
 sigma <- 0.5               # known standard deviation of data
-x_data <- c(0.4, 0.5, 0.6) # observed data
+# x_data <- c(0.4, 0.5, 0.6) # observed data
+set.seed(9834)
+x_data <- rnorm(7, 0.8, sigma)
 n <- length(x_data)
 x_bar <- mean(x_data)
 
@@ -924,19 +926,23 @@ prior_density <- dnorm(theta, mean = mu_0, sd = sigma_0)
 likelihood_density <- dnorm(theta, mean = x_bar, sd = sigma / sqrt(n))  # Likelihood ~ N(x̄, σ²/n)
 posterior_density <- dnorm(theta, mean = mu_n, sd = sigma_n)
 
+maxy <- max(c(prior_density, likelihood_density, posterior_density))
+
 # Plot
 plot(theta, prior_density, type = "l", col = "blue", lwd = 2,
-     ylim = c(0, max(c(prior_density, likelihood_density, posterior_density)) * 1.1),
+     ylim = c(0, maxy * 1.1),
      ylab = "Density", xlab = expression(theta),
      main = "Conjugate Normal-Normal Bayesian Updating")
+
+points(x = x_data, y = rep(maxy * 0.1, length(x_data)))
 
 lines(theta, likelihood_density, col = "red", lwd = 2)
 lines(theta, posterior_density, col = "darkgreen", lwd = 2)
 
-legend("topright",
+legend(x = max(theta) * 2/3, y = maxy * 0.8,
        legend = c("Prior", "Likelihood", "Posterior"),
        col = c("blue", "red", "darkgreen"),
-       lwd = 2, lty = 1, box.lwd = 1, box.col = "gray40", bg = "white")
+       lwd = 2, lty = 1, box.lwd = 1, box.col = NA, bg = NA)
 ```
 
 

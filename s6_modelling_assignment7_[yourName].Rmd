@@ -34,10 +34,11 @@ library(ggplot2)  # important package for plotting.
 
 # Task 1: Estimate paramters with MCMC sampling 
 
+
 * Take simulated data from a linear model one of the first assignments
     + Show the data
 
-* Estimate the parameters of a simple linear model with MCMC sampling 
+* Estimate the slope of a simple linear model with MCMC sampling (feel free to assume an intercept of 0 or estimate both)
 
 * Check the results with a simple linear model using `lm()` and try to fit the model with the `brm()` function in the `brms` package 
 
