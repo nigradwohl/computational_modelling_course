@@ -32,7 +32,7 @@ library(ggplot2)  # important package for plotting.
 
 
 
-# Task 1: Estimate paramters with MCMC sampling 
+# Task 1: Estimate parameters with MCMC sampling 
 
 
 * Take simulated data from a linear model one of the first assignments
