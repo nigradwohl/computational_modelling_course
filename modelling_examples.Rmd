@@ -1020,12 +1020,12 @@ beta <- 1
 
 # Metropolis-Hastings parameters
 iterations <- 10000
-burnin <- 1000
+burn_in <- 1000
 theta_current <- 0.5  # current parameter.
 proposal_sd <- 0.05
 
 # Storage for samples
-samples <- numeric(iterations)
+samples_post <- numeric(iterations)
 
 # Log posterior function (up to constant)
 log_posterior <- function(theta, k, n, alpha, beta) {
