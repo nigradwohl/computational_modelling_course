@@ -31,6 +31,12 @@ library(ggplot2)  # important package for plotting.
 **This assignment will be graded** 
 
 
+Link to McElreath:
+https://oceanrep.geomar.de/id/eprint/55819/1/Statistical%20Rethinking%202nd%20Edition.pdf
+
+For code on the Metropolis-Hastigs algorithm you can also consult:
+https://github.com/psy-farrell/computational-modelling
+
 
 # Task 1: Estimate parameters with MCMC sampling 
 
