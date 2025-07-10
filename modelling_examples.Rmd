@@ -991,19 +991,23 @@ for(st in levels(betdat$stf)[-1]){
 num_weeks <- 1e5
 positions <- rep(0,num_weeks)
 current <- 10
+
 for ( i in 1:num_weeks ) {
-# record current position
-positions[i] <- current
-# flip coin to generate proposal
-proposal <- current + sample( c(-1,1) , size=1 )
-# now make sure he loops around the archipelago
-if ( proposal < 1 ) proposal <- 10
-if ( proposal > 10 ) proposal <- 1
-# move?
-prob_move <- proposal/current
-current <- ifelse( runif(1) < prob_move , proposal , current )
+
+  # record current position
+  positions[i] <- current
+  # flip coin to generate proposal
+  proposal <- current + sample( c(-1,1) , size=1 )
+  # now make sure he loops around the archipelago
+  if ( proposal < 1 ) proposal <- 10
+  if ( proposal > 10 ) proposal <- 1
+  # move?
+  prob_move <- proposal/current
+  current <- ifelse( runif(1) < prob_move , proposal , current )
+
 }
 
+plot(positions, type = "l")
 barplot(table(positions))
 ```
 
@@ -1012,14 +1016,14 @@ barplot(table(positions))
 
 # Observed data
 n <- 28        # number of trials
-k <- 16        # number of red balls observed
+k <- 16       # number of red balls observed
 
 # Prior: Beta(alpha, beta)
 alpha <- 1
 beta <- 1
 
 # Metropolis-Hastings parameters
-iterations <- 10000
+iterations <- 1e5
 burn_in <- 1000
 theta_current <- 0.5  # current parameter.
 proposal_sd <- 0.05
@@ -1048,11 +1052,11 @@ for (i in 1:iterations) {
     theta_current <- theta_proposal
   }
   
-  samples[i] <- theta_current
+  samples_post[i] <- theta_current
 }
 
 # Discard burn-in
-samples_post <- samples[(burn_in + 1):iterations]
+samples_post <- samples_post[(burn_in + 1):iterations]
 
 # Plot posterior samples:
 
