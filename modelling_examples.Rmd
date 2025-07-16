@@ -1108,3 +1108,29 @@ barplot(table(positions))
 ```
 
 
+# Hierachical Models 
+
+```{r}
+# x <- rnorm(500, 0.5, 1)
+# y <- 0.2 * x + rnorm(500, 0, 0.4)
+# 
+# dat <- data.frame(x = x, y = y, id = 1:length(x))
+# 
+# library(lme4)
+# 
+# lmer(y ~ x + (1 | id), dat)
+```
+
+```{r}
+x <- seq(-4, 4, by = 0.05)
+
+data.frame(x = x, y = dnorm(x)) %>%
+ggplot(aes(x = x, y = y)) +
+geom_line(linewidth = 1.2) +
+theme_void()
+
+ggsave("_figures/raw_normal.png", height = 5, width = 5, unit = "cm")
+```
+
+
+# Neural Networks
