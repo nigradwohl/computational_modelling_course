@@ -1,5 +1,5 @@
 ---
-title: "Computational modelling of judgments, decisions and cognition -- Assignments 5: Bootstrapping and Model Comparison"
+title: "Computational modelling of judgments, decisions and cognition -- Assignments 8: Modelling in a fictitious research process"
 author: '[YOUR NAME]'
 date: "`r Sys.Date()`"
 output:
