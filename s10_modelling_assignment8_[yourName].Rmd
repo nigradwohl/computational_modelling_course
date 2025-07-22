@@ -1,0 +1,63 @@
+---
+title: "Computational modelling of judgments, decisions and cognition -- Assignments 5: Bootstrapping and Model Comparison"
+author: '[YOUR NAME]'
+date: "`r Sys.Date()`"
+output:
+  html_document: default
+  pdf_document: default
+editor_options:
+  chunk_output_type: console
+---
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+```
+
+
+# General rules for handing in assignments 
+
+
+1. You have to hand in all assignments except for one ungraded assignment.
+
+1. Upload your assignments to ilias until Wednesday 3 pm. 
+
+1. Assignments are *not* graded, unless it says so in the beginning of the assignment. 
+
+1. You have to complete all numbered tasks; if there are one or more bonus tasks, you may skip them 
+
+
+**This assignment will be graded** 
+
+
+Link to McElreath:
+https://oceanrep.geomar.de/id/eprint/55819/1/Statistical%20Rethinking%202nd%20Edition.pdf
+
+For code on the Metropolis-Hastings algorithm you can also consult:
+https://github.com/psy-farrell/computational-modelling
+
+
+# Task: Describe data from a fictitious experiment 
+
+Time to connect the things you learned.
+
+1. Select a task and a cognitive model with at least 2 parameters and visualize the underlying functions. 
+
+2. Simulate data from this model.
+Think of a potential experimental manipulation and select individual parameters accordingly (you can also draw them from different distributions).
+
+3. Fit the true model to the simulated data. 
+Use a method (maximum likelihood or Bayesian) and algorithm (grid search, Nelder-mead, MCMC, HMC) of your choice.
+
+4. Fit a simpler model and compare it to the true model.
+
+5. What do you learn about the models and their parameters?
+Discuss the results also with respect to your fictitious experimental manipulation. 
+
+*Notes*: 
+
+* Although they need not be perfect, I want to see that you spent some thought about possible manipulations -- what could affect your parameters and why? 
+
+* You are allowed reuse *your* previous code. But make sure that it fits your data.
+
