@@ -52,7 +52,7 @@ Use a method (maximum likelihood or Bayesian) and algorithm (grid search, Nelder
 
 4. Fit a simpler model and compare it to the true model.
 
-5. What do you learn about the models and their parameters? Make sure to provide uncertainty about your model paramters in both models.
+5. What do you learn about the models and their parameters? Make sure to provide uncertainty about your model parameters in both models.
 Discuss the results, also with respect to your fictitious experimental manipulation. 
 
 *Notes*: 
