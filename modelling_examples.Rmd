@@ -163,6 +163,8 @@ thlg <- theme(axis.title = element_text(size = 16),
   set.seed(09234)
   learn_speed <- rnorm(n)
   alcohol <- rnorm(n, learn_speed)  # assuming that more intelligent people drink more  
+
+write.table(data.frame(learn_speed = learn_speed, alcohol_cons = alcohol), "_data/learn_alc.csv")
 ```
 
 
