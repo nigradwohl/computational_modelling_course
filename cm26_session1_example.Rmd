@@ -66,8 +66,8 @@ dat %>%
 ## Illustrate EU 
 
 ```{r EU-illu}
-money_val <- seq(0, 2000, by = 0.1)
-alpvec <- c(0.6, 0.9)
+money_val <- seq(0, 100, by = 0.1)
+alpvec <- c(0.6, 0.9, 1)
 
 datalist <- lapply(alpvec, FUN = function(alp){
   data.frame(mon = money_val, ut = money_val^alp, alp = alp)})
@@ -84,7 +84,13 @@ plt_ut <- do.call(rbind, datalist) %>%
 
 plt_ut
 
-ggsave("_figures/utility_EV.png", unit = "cm", width = )
+ggsave("_figures/utility_EV.png", unit = "cm", width = 20, height = 14)
+
+plt_ut +
+  geom_line(linewidth = 1) +
+  scale_color_brewer(palette = "Dark2")
+
+ggsave("_figures/utility_ut.png", unit = "cm", width = 20, height = 14)
 
 ```
 
