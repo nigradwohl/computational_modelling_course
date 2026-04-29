@@ -1,0 +1,90 @@
+---
+title: 'CM26: Session'
+author: "Dr. Nico Gradwohl"
+date: "`r Sys.Date()`"
+output: 
+  bookdown::html_document2:
+    code_folding: hide
+    toc: true
+    toc_float: true
+    toc_depth: 3
+    number_sections: false
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r housekeep}
+library(knitr)
+
+# Set chunk options:
+opts_chunk$set(# cache = TRUE, autodep = TRUE, cache.comments = FALSE,
+               echo = TRUE, include = TRUE,
+               message = FALSE, warning = FALSE, # no messages or warnings.
+               collapse = TRUE,
+               results = 'hold', # pushes results to end of chunk.
+               fig.width = 8, fig.height = 3,
+               fig.pos = 'bt',
+               dpi = 120
+)
+```
+
+
+```{r markdown-prep}
+library(dplyr)  # basic package for changing data structures.
+
+library(ggplot2)  # important package for plotting.
+
+thlg <- theme(axis.title = element_text(size = 16),
+              axis.text = element_text(size = 14),
+              legend.title = element_text(size = 14),
+              legend.text = element_text(size = 12))
+```
+
+```{r load-data}
+# Load data:
+dat <- read.table("_data/learn_alc.csv", sep = " ", header = TRUE,
+                  stringsAsFactors = FALSE)
+head(dat)
+```
+
+To answer the question whether there is a relationship between alcohol consumption and learning speed, I fit a linear model with OLS:
+
+```{r fit-model}
+fit <- lm(learn_speed ~ alcohol_cons, data = dat)
+summary(fit)
+```
+
+
+```{r visualize}
+dat %>%
+  ggplot(aes(x = alcohol_cons, y = learn_speed)) +
+  geom_point() +
+  geom_smooth(method = "lm")
+```
+
+
+## Illustrate EU 
+
+```{r EU-illu}
+money_val <- seq(0, 2000, by = 0.1)
+alpvec <- c(0.6, 0.9)
+
+datalist <- lapply(alpvec, FUN = function(alp){
+  data.frame(mon = money_val, ut = money_val^alp, alp = alp)})
+
+
+# EV:
+plt_ut <- do.call(rbind, datalist) %>%
+  ggplot(aes(x = mon, y = ut, color = factor(alp))) +
+  geom_abline(aes(color = "Expected value"), slope = 1, linewidth = 1, linetype = "dashed") +
+  geom_line(linewidth = NA) +
+  labs(x = "Monetary value", y = "Utility (V_i)", color = "alpha") +
+  theme_bw() +
+  theme(text = element_text(size = 16))
+
+plt_ut
+
+ggsave("_figures/utility_EV.png", unit = "cm", width = )
+
+```
+
