@@ -222,7 +222,29 @@ plt_alc_learn +
 ggsave("_figures/alc_learn_fit.png", height = 12, width = 12, unit = "cm")
 ```
 
+```{r lin-mod-gridsearch}
+curgrid <- expand.grid(a = seq(-0.1, 0.5, by = 0.1), b = seq(-0.1, 0.5, by = 0.2))
 
+for(rw in 1:nrow(curgrid)){
+
+  cura <- curgrid$a[rw]
+  curb <- curgrid$b[rw]
+
+  plt <- plt_alc_learn +
+      # Linear:
+      geom_abline(intercept = cura, slope = curb, linewidth = 1) +
+      annotate(geom = "polygon", x = c(1, 0, 1), y = c(cura + curb, cura, cura),
+              linetype = "dashed", color = "black",
+              alpha = 0.3)
+
+  par(ask=TRUE)
+  plot(plt)
+  par(ask=FALSE)
+}
+
+  
+
+```
 
 # Session 1 
 
@@ -251,7 +273,7 @@ ggsave("_figures/pmass_lik.png", height = 12, width = 12, unit = "cm")
 
 # Density:
 tr <- seq(0, 30, by = 0.01)
-dvals <- dlnorm(tr, 2, 1.7)
+dvals <- dlnorm(tr, 2, sqrt(2 - log(7)))
 pdens <- data.frame(t = tr, dens = dvals) %>%
   ggplot(aes(x = tr, y = dens)) +
   geom_line(linewidth = 1) +
