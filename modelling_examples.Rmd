@@ -1009,6 +1009,53 @@ for(st in levels(betdat$stf)[-1]){
 
 ```
 
+### Poisson Example
+
+Conjugacy with Gamma prior but not with normal prior 
+
+```{r illus-pois}
+# Different Poisson Distributions for illustration:
+
+dat_pois <- expand.grid(lam = c(0.5, 1, 3), k = 0:20)
+
+dat_pois <- dat_pois %>%
+      group_by(lam) %>%
+      mutate(p = dpois(k, unique(lam)))
+    
+
+dat_pois %>%
+  ggplot(aes(x = k, y = p, color = factor(lam), group = lam)) +
+  geom_line(color = "darkgrey", linewidth = 1) +
+  geom_point(size = 3) +
+  scale_color_viridis_d() +
+  labs(color = expression(lambda)) +
+  theme_bw() +
+  thlg
+
+ggsave("_figures/pois_ex.png", width = 12, height = 9, unit = "cm")
+
+
+# Normal prior:
+x <- seq(0, 10, by = 0.1)
+data.frame(x = x, y = dnorm(x, 5, 1)) %>%
+  ggplot(aes(x = x, y = y)) +
+  geom_line(linewidth = 1) +
+  theme_bw() +
+  thlg
+
+ggsave("_figures/pri_norm_pois_ex.png", width = 12, height = 9, unit = "cm")
+
+
+# Produce some data:
+  set.seed(098734)
+  datpois <- rpois(20, 3)
+  cat(datpois, sep = ",")
+
+  
+  
+```
+
+
 ### Metropolis 
 
 ```{r met-elreath}
